@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +47,15 @@ public class User implements UserDetails {
     @JsonIgnore
     String password;
 
+    @Column(nullable = false)
+    String firstName;
+
+    @Column(nullable = false)
+    String lastName;
+
+    @Column(nullable = false)
+    String email;
+
     String phoneNumber;
 
     @CreationTimestamp
@@ -53,9 +64,14 @@ public class User implements UserDetails {
     @UpdateTimestamp
     Timestamp updatedAt;
 
+    Date dateOfBirth;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Address> addresses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
