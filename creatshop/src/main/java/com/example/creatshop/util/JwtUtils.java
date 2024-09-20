@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtUtils {
 
-    @Value("")
+    @Value("${auth.token.jwtSecret}")
     String jwtSecret;
 
-    @Value("")
+    @Value("${auth.token.expirationInMils}")
     int jwtExpirationTime;
 
-    @Value("")
+    @Value("${auth.token.refreshInMils}")
     int jwtRefreshTime;
 
     public String generateJwtToken(Authentication authentication) {
