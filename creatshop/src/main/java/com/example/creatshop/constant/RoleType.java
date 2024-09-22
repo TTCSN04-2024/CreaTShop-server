@@ -8,5 +8,5 @@ package com.example.creatshop.constant;
  */
 
 public enum RoleType {
-    ADMIN, USER
+    ROLE_ADMIN, ROLE_USER
 }
