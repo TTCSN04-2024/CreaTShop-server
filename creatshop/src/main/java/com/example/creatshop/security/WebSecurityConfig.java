@@ -68,7 +68,7 @@ public class WebSecurityConfig {
                          }));
             })
             .authorizeHttpRequests(auth ->
-                    auth.anyRequest().permitAll()
+                    auth.requestMatchers(CATCH_ALL_WILDCARD).permitAll()
             )
             .authenticationProvider(authenticationProvider);
 

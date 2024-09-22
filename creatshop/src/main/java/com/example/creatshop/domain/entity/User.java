@@ -56,15 +56,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     String email;
 
+    @Column(nullable = false)
     String phoneNumber;
+
+    Date dateOfBirth;
 
     @CreationTimestamp
     Timestamp createdAt;
 
     @UpdateTimestamp
     Timestamp updatedAt;
-
-    Date dateOfBirth;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")

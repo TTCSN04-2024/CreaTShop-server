@@ -22,4 +22,18 @@ public interface ErrorMessage {
         String ERR_MISSING_PREFIX    = "exception.auth.missing-prefix";
         String ERR_FORBIDDEN         = "exception.auth.forbidden";
     }
+
+    interface Validate {
+        String ERR_USERNAME_NOT_BLANK  = "exception.validate.username.not-blank";
+        String ERR_PASSWORD_NOT_BLANK  = "exception.validate.password.not-blank";
+        String ERR_PASSWORD_FORMAT     = "exception.validate.password.format";
+        String ERR_FIRSTNAME_NOT_BLANK = "exception.validate.firstName.not-blank";
+        String ERR_LASTNAME_NOT_BLANK = "exception.validate.lastName.not-blank";
+        String ERR_EMAIL_FORMAT       = "exception.validate.email.format";
+        String ERR_PHONE_FORMAT       = "exception.validate.phoneNumber.format";
+    }
+
+    public interface Role {
+        String NOT_FOUND_BY_TYPE = "exception.role.not-found";
+    }
 }
