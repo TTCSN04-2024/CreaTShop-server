@@ -2,6 +2,10 @@ package com.example.creatshop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Timestamp;
 
 /*
  * @author HongAnh
@@ -27,10 +31,18 @@ public class ProductVariant {
     @Column(nullable = false)
     String color;
 
+    String name;
+
     String size;
 
     Integer quantity;
 
     @ManyToOne
     Product product;
+
+    @CreationTimestamp
+    Timestamp createdAt;
+
+    @UpdateTimestamp
+    Timestamp updatedAt;
 }

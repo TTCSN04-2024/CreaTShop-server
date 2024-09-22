@@ -1,7 +1,7 @@
 package com.example.creatshop.domain.entity;
 /*
  * @author HongAnh
- * @created 22 / 09 / 2024 - 9:02 AM
+ * @created 22 / 09 / 2024 - 9:51 AM
  * @project CreaTShop-server
  * @social Github: https://github.com/lehonganh0201
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
@@ -19,34 +19,24 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Table(name = "products")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Product {
+@Table(name = "carts")
+public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(nullable = false)
-    String name;
+    Double cartTotal;
 
-    @Column(nullable = false)
-    Double price;
+    @OneToMany(mappedBy = "cart")
+    List<CartItem> cartItems;
 
-    @Column(nullable = false)
-    String imageStaticUrl;
-
-    @Column(nullable = false)
-    String imageDynamicUrl;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    Category category;
-
-    @OneToMany(mappedBy = "product")
-    List<ProductVariant> productVariants;
+    @OneToOne(mappedBy = "cart")
+    User user;
 
     @CreationTimestamp
     Timestamp createdAt;
