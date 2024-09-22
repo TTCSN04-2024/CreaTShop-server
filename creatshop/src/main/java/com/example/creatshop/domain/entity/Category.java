@@ -15,6 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +36,9 @@ public class Category {
 
     @Column(name = "category_type", unique = true, nullable = false)
     CategoryType type;
+
+    @OneToMany(mappedBy = "category")
+    List<Product> products;
 
     @CreationTimestamp
     Timestamp createdAt;
