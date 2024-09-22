@@ -31,6 +31,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role_type", unique = true, columnDefinition = "CHAR(36)")
     RoleType type;
 
