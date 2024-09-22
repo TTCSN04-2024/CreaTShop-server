@@ -8,6 +8,7 @@ package com.example.creatshop.service.impl;
  */
 
 import com.example.creatshop.constant.Status;
+import com.example.creatshop.constant.Validate;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.LoginRequest;
@@ -24,6 +25,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -33,16 +35,21 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Log4j2
 public class AuthServiceImpl implements AuthService {
-    UserRepository        userRepository;
+    UserRepository userRepository;
+
     AuthenticationManager authenticationManager;
-    JwtUtils              jwtUtils;
+
+    JwtUtils        jwtUtils;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public GlobalResponse<Meta, AuthResponse> login(LoginRequest request) {
+        log.error(Validate.Auth.PASSWORD_PATTERN.matches(request.getPassword()));
         Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                request.getUsername(),
-                                request.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
         );
 
         String accessToken = jwtUtils.generateJwtToken(authentication);

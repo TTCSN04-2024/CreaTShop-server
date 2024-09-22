@@ -43,8 +43,8 @@ public class WebConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(encoder());
         provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(encoder());
         return provider;
     }
 
