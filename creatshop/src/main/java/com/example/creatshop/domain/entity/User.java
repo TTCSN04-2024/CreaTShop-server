@@ -73,6 +73,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Address> addresses;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         GrantedAuthority authority = new SimpleGrantedAuthority(this.getRole().getType().name());
