@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Column(columnDefinition = "CHAR(36)", nullable = false, updatable = false, insertable = false)
     String id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     String username;
 
     @Column(nullable = false)
