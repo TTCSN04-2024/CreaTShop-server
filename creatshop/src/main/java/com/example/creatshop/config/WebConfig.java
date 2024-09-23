@@ -7,6 +7,10 @@ package com.example.creatshop.config;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.RoleType;
+import com.example.creatshop.domain.entity.Role;
+import com.example.creatshop.domain.entity.User;
+import com.example.creatshop.repository.RoleRepository;
 import com.example.creatshop.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -58,5 +62,35 @@ public class WebConfig {
             AuthenticationConfiguration configuration
     ) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public boolean initSystem(RoleRepository roleRepository, PasswordEncoder encoder) {
+        Role role = null;
+
+        if (!roleRepository.existsByType(RoleType.ROLE_ADMIN)) {
+            role = Role.builder()
+                       .type(RoleType.ROLE_ADMIN)
+                       .description("This role for admin")
+                       .build();
+
+            role = roleRepository.save(role);
+        }
+
+        if (!userRepository.existsByUsername("lehonganh")) {
+            User user = User.builder()
+                            .firstName("Le Hong")
+                            .lastName("Anh")
+                            .username("lehonganh")
+                            .password(encoder.encode("Password123!"))
+                            .phoneNumber("039125678")
+                            .email("le292620@gmail.com")
+                            .role(role)
+                            .build();
+
+            userRepository.save(user);
+        }
+
+        return true;
     }
 }

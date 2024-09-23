@@ -12,8 +12,14 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.UserRequest;
 import com.example.creatshop.domain.dto.response.UserResponse;
 
+import java.util.List;
+
 public interface UserService {
     GlobalResponse<Meta, UserResponse> createUser(UserRequest request);
 
     GlobalResponse<Meta, UserResponse> updateUser(UserRequest request, String username);
+
+    GlobalResponse<Meta, UserResponse> getUser(String username);
+
+    GlobalResponse<Meta, List<UserResponse>> getUsers();
 }
