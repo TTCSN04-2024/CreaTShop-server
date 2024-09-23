@@ -18,12 +18,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class AuthResponse {
     String accessToken;
-    String type;
+    String type = "Bearer";
     String roles;
 
     public AuthResponse(String accessToken, String roles) {
         this.accessToken = accessToken;
         this.roles = roles;
-        type = "Bearer";
     }
 }

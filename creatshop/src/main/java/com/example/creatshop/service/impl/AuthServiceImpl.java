@@ -66,7 +66,8 @@ public class AuthServiceImpl implements AuthService {
                 .meta(Meta.builder().status(Status.SUCCESS).build())
                 .data(AuthResponse.builder()
                                   .accessToken(accessToken)
-                                  .roles(roles).build())
+                                  .roles(roles)
+                                  .type("Bearer").build())
                 .build();
     }
 }
