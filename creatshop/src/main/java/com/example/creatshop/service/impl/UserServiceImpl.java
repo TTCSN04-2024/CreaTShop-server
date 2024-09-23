@@ -14,10 +14,12 @@ import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.UserRequest;
 import com.example.creatshop.domain.dto.response.UserResponse;
+import com.example.creatshop.domain.entity.Cart;
 import com.example.creatshop.domain.entity.Role;
 import com.example.creatshop.domain.entity.User;
 import com.example.creatshop.domain.mapper.UserMapper;
 import com.example.creatshop.exception.NotFoundException;
+import com.example.creatshop.repository.CartRepository;
 import com.example.creatshop.repository.RoleRepository;
 import com.example.creatshop.repository.UserRepository;
 import com.example.creatshop.service.UserService;
@@ -28,6 +30,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -35,6 +39,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RoleRepository roleRepository;
+    CartRepository cartRepository;
 
     UserMapper userMapper;
 
@@ -60,6 +65,15 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User savedUser = userRepository.save(user);
+
+        if (Objects.isNull(savedUser.getCart())) {
+            Cart cart = Cart.builder()
+                            .cartTotal(0.0).build();
+
+            savedUser.addCart(cart);
+
+            cartRepository.save(cart);
+        }
 
         UserResponse response = userMapper.toUserResponse(savedUser);
 

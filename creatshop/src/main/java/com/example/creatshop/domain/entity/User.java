@@ -19,10 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -107,5 +104,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public void addCart(Cart cart) {
+        if (Objects.isNull(this.cart)) {
+            this.setCart(cart);
+            cart.setUser(this);
+        }
     }
 }
