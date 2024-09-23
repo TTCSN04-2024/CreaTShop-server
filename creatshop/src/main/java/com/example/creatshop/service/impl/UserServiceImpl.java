@@ -33,6 +33,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Log4j2
@@ -105,6 +107,38 @@ public class UserServiceImpl implements UserService {
                 .<Meta, UserResponse>builder()
                 .meta(Meta.builder().status(Status.SUCCESS).build())
                 .data(response)
+                .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, UserResponse> getUser(String username) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        UserResponse response = userMapper.toUserResponse(user);
+
+        return GlobalResponse
+                .<Meta, UserResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<UserResponse>> getUsers() {
+        List<UserResponse> responses = new ArrayList<>();
+
+        List<User> users = userRepository.findAll();
+        users.forEach(user -> {
+            UserResponse response = userMapper.toUserResponse(user);
+
+            responses.add(response);
+        });
+
+        return GlobalResponse
+                .<Meta, List<UserResponse>>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(responses)
                 .build();
     }
 }

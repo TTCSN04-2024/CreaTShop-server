@@ -25,6 +25,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -46,5 +48,20 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.updateUser(request, userDetails.getUsername()));
+    }
+
+    @GetMapping(Endpoint.V1.User.GET_USER)
+    public ResponseEntity<GlobalResponse<Meta, UserResponse>> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUser(userDetails.getUsername()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(Endpoint.V1.User.GET_USERS)
+    public ResponseEntity<GlobalResponse<Meta, List<UserResponse>>> getUsers() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUsers());
     }
 }

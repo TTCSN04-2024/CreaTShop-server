@@ -21,6 +21,8 @@ public interface Endpoint {
             String PREFIX      = V1.PREFIX + "/users";
             String CREATE_USER = PREFIX;
             String UPDATE_USER = PREFIX;
+            String GET_USER    = PREFIX + "/me";
+            String GET_USERS   = PREFIX;
         }
     }
 }
