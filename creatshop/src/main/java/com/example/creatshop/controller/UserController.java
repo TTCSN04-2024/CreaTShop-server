@@ -20,10 +20,10 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @Log4j2
 @RestController
@@ -37,5 +37,14 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.createUser(request));
+    }
+
+//    @PreAuthorize("#request.username == principal.username or hasRole('ADMIN')")
+    @PutMapping(Endpoint.V1.User.UPDATE_USER)
+    public ResponseEntity<GlobalResponse<Meta, UserResponse>> updateUser(@RequestBody UserRequest request,
+                                                                         @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.updateUser(request, userDetails.getUsername()));
     }
 }

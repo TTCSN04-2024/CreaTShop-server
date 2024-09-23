@@ -14,4 +14,6 @@ import com.example.creatshop.domain.dto.response.UserResponse;
 
 public interface UserService {
     GlobalResponse<Meta, UserResponse> createUser(UserRequest request);
+
+    GlobalResponse<Meta, UserResponse> updateUser(UserRequest request, String username);
 }

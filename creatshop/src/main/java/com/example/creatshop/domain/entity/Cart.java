@@ -30,6 +30,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0")
     Double cartTotal;
 
     @OneToMany(mappedBy = "cart")
