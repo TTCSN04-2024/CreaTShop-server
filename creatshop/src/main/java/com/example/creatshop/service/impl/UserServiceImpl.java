@@ -18,17 +18,20 @@ import com.example.creatshop.domain.entity.Cart;
 import com.example.creatshop.domain.entity.Role;
 import com.example.creatshop.domain.entity.User;
 import com.example.creatshop.domain.mapper.UserMapper;
+import com.example.creatshop.exception.BadRequestException;
 import com.example.creatshop.exception.NotFoundException;
 import com.example.creatshop.repository.CartRepository;
 import com.example.creatshop.repository.RoleRepository;
 import com.example.creatshop.repository.UserRepository;
 import com.example.creatshop.service.UserService;
+import io.jsonwebtoken.lang.Strings;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -76,6 +79,27 @@ public class UserServiceImpl implements UserService {
         }
 
         UserResponse response = userMapper.toUserResponse(savedUser);
+
+        return GlobalResponse
+                .<Meta, UserResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, UserResponse> updateUser(UserRequest request, String username) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        if (StringUtils.hasText(request.getUsername())) {
+            throw new BadRequestException(ErrorMessage.User.ERR_CAN_NOT_UPDATE_USERNAME);
+        }
+
+        userMapper.updateUser(request, user);
+
+        userRepository.save(user);
+        UserResponse response = userMapper.toUserResponse(user);
 
         return GlobalResponse
                 .<Meta, UserResponse>builder()

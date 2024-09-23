@@ -14,12 +14,13 @@ public interface Endpoint {
 
         interface Auth {
             String PREFIX = V1.PREFIX + "/auths";
-            String LOGIN = PREFIX + "/login";
+            String LOGIN  = PREFIX + "/login";
         }
 
         public interface User {
-            String PREFIX = V1.PREFIX + "/users";
+            String PREFIX      = V1.PREFIX + "/users";
             String CREATE_USER = PREFIX;
+            String UPDATE_USER = PREFIX;
         }
     }
 }
