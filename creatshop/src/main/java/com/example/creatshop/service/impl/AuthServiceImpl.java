@@ -44,7 +44,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public GlobalResponse<Meta, AuthResponse> login(LoginRequest request) {
-        log.error(Validate.Auth.PASSWORD_PATTERN.matches(request.getPassword()));
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

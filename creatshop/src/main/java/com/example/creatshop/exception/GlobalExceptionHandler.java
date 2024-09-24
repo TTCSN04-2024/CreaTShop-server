@@ -19,8 +19,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 @Log4j2
@@ -56,6 +61,30 @@ public class GlobalExceptionHandler {
                                   .message(messageSourceUtil.getLocalizedMessage(ex.getMessage()))
                                   .build()
                         )
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<GlobalResponse<Meta, Map<String, String>>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        Map<String, String> validationErrors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = messageSourceUtil.getLocalizedMessage(error.getDefaultMessage());
+            validationErrors.put(fieldName, errorMessage);
+        });
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(GlobalResponse
+                        .<Meta, Map<String, String>>builder()
+                        .meta(Meta.builder()
+                                  .status(Status.ERROR)
+                                  .message("Validation failed")
+                                  .build()
+                        )
+                        .data(validationErrors)
                         .build()
                 );
     }

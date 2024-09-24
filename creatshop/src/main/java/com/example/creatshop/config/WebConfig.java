@@ -8,8 +8,10 @@ package com.example.creatshop.config;
  */
 
 import com.example.creatshop.constant.RoleType;
+import com.example.creatshop.domain.entity.Cart;
 import com.example.creatshop.domain.entity.Role;
 import com.example.creatshop.domain.entity.User;
+import com.example.creatshop.repository.CartRepository;
 import com.example.creatshop.repository.RoleRepository;
 import com.example.creatshop.repository.UserRepository;
 import lombok.AccessLevel;
@@ -65,7 +67,7 @@ public class WebConfig {
     }
 
     @Bean
-    public boolean initSystem(RoleRepository roleRepository, PasswordEncoder encoder) {
+    public boolean initSystem(RoleRepository roleRepository, CartRepository cartRepository, PasswordEncoder encoder) {
         Role role = null;
 
         if (!roleRepository.existsByType(RoleType.ROLE_ADMIN)) {
@@ -88,6 +90,10 @@ public class WebConfig {
                             .role(role)
                             .build();
 
+            Cart cart = Cart.builder().build();
+            cart = cartRepository.save(cart);
+
+            user.setCart(cart);
             userRepository.save(user);
         }
 
