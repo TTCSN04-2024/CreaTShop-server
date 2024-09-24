@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         if (Objects.isNull(savedUser.getCart())) {
             Cart cart = Cart.builder()
-                            .cartTotal(0.0).build();
+                            .build();
 
             savedUser.addCart(cart);
 
