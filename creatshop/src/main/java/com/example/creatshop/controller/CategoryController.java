@@ -42,4 +42,11 @@ public class CategoryController {
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategory(cateId, request));
     }
+
+    @DeleteMapping(Endpoint.V1.Category.DELETE_CATEGORY)
+    public ResponseEntity<GlobalResponse<Meta, String>> deleteCate(@PathVariable(name = "id") Integer cateId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.deleteCategory(cateId));
+    }
 }

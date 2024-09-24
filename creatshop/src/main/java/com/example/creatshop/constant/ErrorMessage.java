@@ -49,4 +49,8 @@ public interface ErrorMessage {
         String NOT_FOUND_TYPE  = "exception.category.not-found-type";
         String NOT_FOUND_BY_ID = "exception.category.not-found-id";
     }
+
+    public interface Common {
+        String ALREADY_EXIST_NAME = "exception.common.exist-by-name";
+    }
 }

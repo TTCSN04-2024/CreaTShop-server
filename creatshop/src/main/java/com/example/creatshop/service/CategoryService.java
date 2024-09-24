@@ -16,4 +16,6 @@ public interface CategoryService {
     GlobalResponse<Meta, CategoryResponse> createCategory(CategoryRequest request);
 
     GlobalResponse<Meta, CategoryResponse> updateCategory(Integer id, CategoryRequest request);
+
+    GlobalResponse<Meta, String> deleteCategory(Integer cateId);
 }

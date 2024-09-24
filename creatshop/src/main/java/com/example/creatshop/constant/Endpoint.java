@@ -29,6 +29,7 @@ public interface Endpoint {
             String PREFIX          = V1.PREFIX + "/categories";
             String CREATE_CATEGORY = PREFIX;
             String UPDATE_CATEGORY = PREFIX + "/{id}";
+            String DELETE_CATEGORY = PREFIX + "/{id}";
         }
     }
 }
