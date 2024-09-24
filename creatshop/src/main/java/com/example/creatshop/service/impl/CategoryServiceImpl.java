@@ -7,12 +7,14 @@ package com.example.creatshop.service.impl;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.CategoryType;
 import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.CategoryRequest;
 import com.example.creatshop.domain.dto.response.CategoryResponse;
+import com.example.creatshop.domain.dto.response.CategoryTypeResponse;
 import com.example.creatshop.domain.entity.Category;
 import com.example.creatshop.domain.mapper.CategoryMapper;
 import com.example.creatshop.exception.AlreadyExistsException;
@@ -30,6 +32,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -42,8 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public GlobalResponse<Meta, CategoryResponse> createCategory(CategoryRequest request) {
+        List<Category> categories = categoryRepository.findAll();
 
-        if (categoryRepository.existsByName(request.getName())) {
+        if (categories.stream().anyMatch(category -> category.getName().equals(request.getName()) && category.getType().name().equals(request.getType()))) {
             throw new AlreadyExistsException(ErrorMessage.Category.EXISTS_BY_NAME);
         }
 
@@ -72,8 +80,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public GlobalResponse<Meta, CategoryResponse> updateCategory(Integer id, CategoryRequest request) {
+        List<Category> categories = categoryRepository.findAll();
 
-        if (StringUtils.hasText(request.getName()) && categoryRepository.existsByName(request.getName())) {
+        if (StringUtils.hasText(request.getName()) && categories.stream().anyMatch(category -> category.getName().equals(request.getName()) && category.getType().name().equals(request.getType()))) {
             throw new AlreadyExistsException(ErrorMessage.Category.EXISTS_BY_NAME);
         }
 
@@ -111,6 +120,28 @@ public class CategoryServiceImpl implements CategoryService {
         return GlobalResponse.<Meta, String>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data("Delete Category Success")
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<CategoryTypeResponse>> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+
+        Map<CategoryType, List<Category>> categoriesGroupedByType = categories.stream()
+                                                                              .collect(Collectors.groupingBy(Category::getType));
+        List<CategoryTypeResponse> responses = new ArrayList<>();
+
+        categoriesGroupedByType.forEach((type, catList) -> {
+            List<CategoryResponse> categoryResponses = catList.stream()
+                                                              .map(category -> categoryMapper.toCategoryResponse(category))
+                                                              .collect(Collectors.toList());
+
+            responses.add(new CategoryTypeResponse(type.name(), categoryResponses));
+        });
+
+        return GlobalResponse.<Meta, List<CategoryTypeResponse>>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(responses)
                              .build();
     }
 }

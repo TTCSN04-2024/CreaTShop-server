@@ -12,6 +12,7 @@ import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.CategoryRequest;
 import com.example.creatshop.domain.dto.response.CategoryResponse;
+import com.example.creatshop.domain.dto.response.CategoryTypeResponse;
 import com.example.creatshop.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,6 +22,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -48,5 +51,12 @@ public class CategoryController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.deleteCategory(cateId));
+    }
+
+    @GetMapping(Endpoint.V1.Category.GET_CATEGORY)
+    public ResponseEntity<GlobalResponse<Meta, List<CategoryTypeResponse>>> getAllCate() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategories());
     }
 }
