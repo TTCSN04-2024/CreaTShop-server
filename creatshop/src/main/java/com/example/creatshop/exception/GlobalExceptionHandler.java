@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +82,21 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(SQLUniqueException.class)
+    public ResponseEntity<GlobalResponse<Meta, BlankData>> handlerSQLUniqueException(SQLUniqueException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(GlobalResponse
+                        .<Meta, BlankData>builder()
+                        .meta(Meta.builder()
+                                  .status(Status.ERROR)
+                                  .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
+                                  .build()
+                        )
+                        .build()
+                );
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GlobalResponse<Meta, Map<String, String>>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> validationErrors = new HashMap<>();
@@ -102,5 +119,13 @@ public class GlobalExceptionHandler {
                         .data(validationErrors)
                         .build()
                 );
+    }
+
+    private String getCustomMessage(DataIntegrityViolationException ex) {
+        if (ex.getRootCause() instanceof SQLIntegrityConstraintViolationException) {
+            SQLIntegrityConstraintViolationException sqlEx = (SQLIntegrityConstraintViolationException) ex.getRootCause();
+            return "";
+        }
+        return "An error occurred while processing your request.";
     }
 }

@@ -17,13 +17,16 @@ import com.example.creatshop.domain.entity.Category;
 import com.example.creatshop.domain.mapper.CategoryMapper;
 import com.example.creatshop.exception.AlreadyExistsException;
 import com.example.creatshop.exception.NotFoundException;
+import com.example.creatshop.exception.SQLUniqueException;
 import com.example.creatshop.repository.CategoryRepository;
+import com.example.creatshop.repository.ProductRepository;
 import com.example.creatshop.service.CategoryService;
 import com.example.creatshop.util.EnumUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -33,10 +36,9 @@ import org.springframework.util.StringUtils;
 @Log4j2
 public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
-
-    CategoryMapper categoryMapper;
-
-    EnumUtils enumUtils;
+    ProductRepository  productRepository;
+    CategoryMapper     categoryMapper;
+    EnumUtils          enumUtils;
 
     @Override
     public GlobalResponse<Meta, CategoryResponse> createCategory(CategoryRequest request) {
@@ -52,9 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryMapper.toCategory(request);
         category.setType(enumUtils.fromString(request.getType()));
 
-        category = categoryRepository.save(category);
+        Category savedCategory = null;
 
-        CategoryResponse response = categoryMapper.toCategoryResponse(category);
+        try {
+            savedCategory = categoryRepository.save(category);
+        }catch (DataIntegrityViolationException ex) {
+            throw new SQLUniqueException(ErrorMessage.Common.ALREADY_EXIST_NAME);
+        }
+
+        CategoryResponse response = categoryMapper.toCategoryResponse(savedCategory);
 
         return GlobalResponse.<Meta, CategoryResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
@@ -89,6 +97,20 @@ public class CategoryServiceImpl implements CategoryService {
         return GlobalResponse.<Meta, CategoryResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, String> deleteCategory(Integer cateId) {
+        Category category = categoryRepository.findById(cateId)
+                                              .orElseThrow(() -> new NotFoundException(ErrorMessage.Category.NOT_FOUND_BY_ID));
+
+        productRepository.deleteAllByCategory(category);
+        categoryRepository.delete(category);
+
+        return GlobalResponse.<Meta, String>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data("Delete Category Success")
                              .build();
     }
 }

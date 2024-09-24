@@ -20,6 +20,7 @@ import com.example.creatshop.domain.entity.User;
 import com.example.creatshop.domain.mapper.UserMapper;
 import com.example.creatshop.exception.BadRequestException;
 import com.example.creatshop.exception.NotFoundException;
+import com.example.creatshop.exception.SQLUniqueException;
 import com.example.creatshop.repository.CartRepository;
 import com.example.creatshop.repository.RoleRepository;
 import com.example.creatshop.repository.UserRepository;
@@ -29,6 +30,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -69,7 +71,13 @@ public class UserServiceImpl implements UserService {
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        User savedUser = userRepository.save(user);
+        User savedUser = null;
+
+        try {
+            userRepository.save(user);
+        }catch (DataIntegrityViolationException ex) {
+            throw new SQLUniqueException(ErrorMessage.Common.ALREADY_EXIST_NAME);
+        }
 
         if (Objects.isNull(savedUser.getCart())) {
             Cart cart = Cart.builder()
