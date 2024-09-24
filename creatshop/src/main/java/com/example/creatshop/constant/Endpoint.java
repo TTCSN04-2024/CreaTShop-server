@@ -24,5 +24,9 @@ public interface Endpoint {
             String GET_USER    = PREFIX + "/me";
             String GET_USERS   = PREFIX;
         }
+
+        public interface Category {
+            String CREATE_CATEGORY = V1.PREFIX + "/categories";
+        }
     }
 }

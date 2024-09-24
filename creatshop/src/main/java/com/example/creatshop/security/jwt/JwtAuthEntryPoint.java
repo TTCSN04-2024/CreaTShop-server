@@ -12,7 +12,7 @@ import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.util.JwtUtils;
-import com.example.creatshop.util.MessageSourceUtil;
+import com.example.creatshop.util.MessageSourceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,9 +34,9 @@ import java.io.IOException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Log4j2
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
-    ObjectMapper      objectMapper;
-    MessageSourceUtil messageSourceUtil;
-    JwtUtils          jwtUtils;
+    ObjectMapper       objectMapper;
+    MessageSourceUtils messageSourceUtils;
+    JwtUtils           jwtUtils;
 
     @NonFinal
     String AUTH_PREFIX = "Bearer ";
@@ -74,7 +74,7 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
                 .meta(Meta
                         .builder()
                         .status(Status.ERROR)
-                        .message(messageSourceUtil.getLocalizedMessage(message))
+                        .message(messageSourceUtils.getLocalizedMessage(message))
                           .build())
                 .build();
 

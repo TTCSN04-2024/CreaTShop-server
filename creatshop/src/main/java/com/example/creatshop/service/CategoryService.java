@@ -1,0 +1,17 @@
+package com.example.creatshop.service;
+/*
+ * @author HongAnh
+ * @created 24 / 09 / 2024 - 2:58 PM
+ * @project CreaTShop-server
+ * @social Github: https://github.com/lehonganh0201
+ * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
+ */
+
+import com.example.creatshop.domain.dto.global.GlobalResponse;
+import com.example.creatshop.domain.dto.global.Meta;
+import com.example.creatshop.domain.dto.request.CategoryRequest;
+import com.example.creatshop.domain.dto.response.CategoryResponse;
+
+public interface CategoryService {
+    GlobalResponse<Meta, CategoryResponse> createCategory(CategoryRequest request);
+}
