@@ -45,7 +45,8 @@ public interface ErrorMessage {
     }
 
     public interface Category {
-        String EXISTS_BY_NAME = "exception.category.exist-by-name";
-        String NOT_FOUND_TYPE = "exception.category.not-found-type";
+        String EXISTS_BY_NAME  = "exception.category.exist-by-name";
+        String NOT_FOUND_TYPE  = "exception.category.not-found-type";
+        String NOT_FOUND_BY_ID = "exception.category.not-found-id";
     }
 }

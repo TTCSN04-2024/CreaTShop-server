@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,36 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = categoryMapper.toCategory(request);
         category.setType(enumUtils.fromString(request.getType()));
+
+        category = categoryRepository.save(category);
+
+        CategoryResponse response = categoryMapper.toCategoryResponse(category);
+
+        return GlobalResponse.<Meta, CategoryResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, CategoryResponse> updateCategory(Integer id, CategoryRequest request) {
+
+        if (StringUtils.hasText(request.getName()) && categoryRepository.existsByName(request.getName())) {
+            throw new AlreadyExistsException(ErrorMessage.Category.EXISTS_BY_NAME);
+        }
+
+        if (StringUtils.hasText(request.getType()) && !enumUtils.isValidEnumValue(request.getType())) {
+            throw new NotFoundException(ErrorMessage.Category.NOT_FOUND_TYPE);
+        }
+
+        Category category = categoryRepository.findById(id)
+                                              .orElseThrow(() -> new NotFoundException(ErrorMessage.Category.NOT_FOUND_BY_ID));
+
+        categoryMapper.updateCategory(request, category);
+
+        if (StringUtils.hasText(request.getType())) {
+            category.setType(enumUtils.fromString(request.getType()));
+        }
 
         category = categoryRepository.save(category);
 

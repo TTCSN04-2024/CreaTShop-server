@@ -13,15 +13,14 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.CategoryRequest;
 import com.example.creatshop.domain.dto.response.CategoryResponse;
 import com.example.creatshop.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,9 +30,16 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping(Endpoint.V1.Category.CREATE_CATEGORY)
-    public ResponseEntity<GlobalResponse<Meta, CategoryResponse>> createCate(@RequestBody CategoryRequest request) {
+    public ResponseEntity<GlobalResponse<Meta, CategoryResponse>> createCate(@RequestBody @Valid CategoryRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(categoryService.createCategory(request));
+    }
+
+    @PutMapping(Endpoint.V1.Category.UPDATE_CATEGORY)
+    public ResponseEntity<GlobalResponse<Meta, CategoryResponse>> updateCate(@PathVariable(name = "id") Integer cateId, @RequestBody CategoryRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.updateCategory(cateId, request));
     }
 }

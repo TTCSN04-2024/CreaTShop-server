@@ -26,7 +26,9 @@ public interface Endpoint {
         }
 
         public interface Category {
-            String CREATE_CATEGORY = V1.PREFIX + "/categories";
+            String PREFIX          = V1.PREFIX + "/categories";
+            String CREATE_CATEGORY = PREFIX;
+            String UPDATE_CATEGORY = PREFIX + "/{id}";
         }
     }
 }
