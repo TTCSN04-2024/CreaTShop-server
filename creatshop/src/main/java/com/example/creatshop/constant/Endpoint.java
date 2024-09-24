@@ -30,6 +30,7 @@ public interface Endpoint {
             String CREATE_CATEGORY = PREFIX;
             String UPDATE_CATEGORY = PREFIX + "/{id}";
             String DELETE_CATEGORY = PREFIX + "/{id}";
+            String GET_CATEGORY    = PREFIX;
         }
     }
 }
