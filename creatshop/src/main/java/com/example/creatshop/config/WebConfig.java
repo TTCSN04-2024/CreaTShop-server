@@ -94,6 +94,7 @@ public class WebConfig {
             cart = cartRepository.save(cart);
 
             user.setCart(cart);
+
             userRepository.save(user);
         }
 
