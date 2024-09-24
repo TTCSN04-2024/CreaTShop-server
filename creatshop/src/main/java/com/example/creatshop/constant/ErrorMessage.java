@@ -24,13 +24,15 @@ public interface ErrorMessage {
     }
 
     interface Validate {
-        String ERR_USERNAME_NOT_BLANK  = "exception.validate.username.not-blank";
-        String ERR_PASSWORD_NOT_BLANK  = "exception.validate.password.not-blank";
-        String ERR_PASSWORD_FORMAT     = "exception.validate.password.format";
-        String ERR_FIRSTNAME_NOT_BLANK = "exception.validate.firstName.not-blank";
-        String ERR_LASTNAME_NOT_BLANK  = "exception.validate.lastName.not-blank";
-        String ERR_EMAIL_FORMAT        = "exception.validate.email.format";
-        String ERR_PHONE_FORMAT        = "exception.validate.phoneNumber.format";
+        String ERR_USERNAME_NOT_BLANK      = "exception.validate.username.not-blank";
+        String ERR_PASSWORD_NOT_BLANK      = "exception.validate.password.not-blank";
+        String ERR_PASSWORD_FORMAT         = "exception.validate.password.format";
+        String ERR_FIRSTNAME_NOT_BLANK     = "exception.validate.firstName.not-blank";
+        String ERR_LASTNAME_NOT_BLANK      = "exception.validate.lastName.not-blank";
+        String ERR_EMAIL_FORMAT            = "exception.validate.email.format";
+        String ERR_PHONE_FORMAT            = "exception.validate.phoneNumber.format";
+        String ERR_CATEGORY_NAME_NOT_EMPTY = "exception.validate.category.name-not-empty";
+        String ERR_CATEGORY_TYPE_NOT_EMPTY = "exception.validate.category.type-not-empty";
     }
 
     public interface Role {
@@ -40,5 +42,10 @@ public interface ErrorMessage {
     public interface User {
         String ERR_NOT_FOUND_USERNAME      = "exception.user.not-found-username";
         String ERR_CAN_NOT_UPDATE_USERNAME = "exception.user.not-update-username";
+    }
+
+    public interface Category {
+        String EXISTS_BY_NAME = "exception.category.exist-by-name";
+        String NOT_FOUND_TYPE = "exception.category.not-found-type";
     }
 }

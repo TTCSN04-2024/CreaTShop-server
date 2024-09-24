@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MessageSourceUtil {
+public class MessageSourceUtils {
     MessageSource messageSource;
 
     public String getLocalizedMessage(String message, Object... args){

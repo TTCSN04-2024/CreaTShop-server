@@ -13,7 +13,7 @@ import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.security.jwt.AuthTokenFilter;
 import com.example.creatshop.security.jwt.JwtAuthEntryPoint;
-import com.example.creatshop.util.MessageSourceUtil;
+import com.example.creatshop.util.MessageSourceUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -22,6 +22,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -42,11 +43,16 @@ public class WebSecurityConfig {
     @NonFinal
     String CATCH_ALL_WILDCARD = "/**";
 
+    @NonFinal
+    String[] ADMIN_ENDPOINTS = {
+            "/api/v1/categories"
+    };
+
     JwtAuthEntryPoint      authEntryPoint;
     AuthTokenFilter        authTokenFilter;
     AuthenticationProvider authenticationProvider;
-    ObjectMapper           objectMapper;
-    MessageSourceUtil      messageSourceUtil;
+    ObjectMapper       objectMapper;
+    MessageSourceUtils messageSourceUtils;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -60,7 +66,7 @@ public class WebSecurityConfig {
                              GlobalResponse<Meta, Void> responseBody = GlobalResponse.<Meta, Void>builder()
                                                                                      .meta(Meta.builder()
                                                                                                .status(Status.ERROR)
-                                                                                               .message(messageSourceUtil.getLocalizedMessage(ErrorMessage.Auth.ERR_FORBIDDEN))
+                                                                                               .message(messageSourceUtils.getLocalizedMessage(ErrorMessage.Auth.ERR_FORBIDDEN))
                                                                                                .build()
                                                                                      )
                                                                                      .build();
@@ -68,7 +74,10 @@ public class WebSecurityConfig {
                          }));
             })
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(CATCH_ALL_WILDCARD).permitAll()
+                    auth.requestMatchers(HttpMethod.POST, ADMIN_ENDPOINTS).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, ADMIN_ENDPOINTS).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_ENDPOINTS).hasRole("ADMIN")
+                    .requestMatchers(CATCH_ALL_WILDCARD).permitAll()
             )
             .authenticationProvider(authenticationProvider);
 

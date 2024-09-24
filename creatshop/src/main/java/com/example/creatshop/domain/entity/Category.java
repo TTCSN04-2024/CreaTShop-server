@@ -32,9 +32,11 @@ public class Category {
 
     @Column(name = "name", unique = true)
     String name;
+
     String description;
 
-    @Column(name = "category_type", unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category_type", nullable = false)
     CategoryType type;
 
     @OneToMany(mappedBy = "category")

@@ -11,7 +11,7 @@ import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.BlankData;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
-import com.example.creatshop.util.MessageSourceUtil;
+import com.example.creatshop.util.MessageSourceUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,8 +32,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GlobalExceptionHandler {
-    MessageSource     messageSource;
-    MessageSourceUtil messageSourceUtil;
+    MessageSource      messageSource;
+    MessageSourceUtils messageSourceUtils;
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<GlobalResponse<Meta, BlankData>> handlerBadRequestException(BadRequestException ex) {
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
                         .<Meta, BlankData>builder()
                         .meta(Meta.builder()
                                   .status(Status.ERROR)
-                                  .message(messageSourceUtil.getLocalizedMessage(ex.getMessage()))
+                                  .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
                                   .build()
                         )
                         .build()
@@ -58,7 +58,22 @@ public class GlobalExceptionHandler {
                         .<Meta, BlankData>builder()
                         .meta(Meta.builder()
                                   .status(Status.ERROR)
-                                  .message(messageSourceUtil.getLocalizedMessage(ex.getMessage()))
+                                  .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
+                                  .build()
+                        )
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<GlobalResponse<Meta, BlankData>> handlerAlreadyExistsException(AlreadyExistsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(GlobalResponse
+                        .<Meta, BlankData>builder()
+                        .meta(Meta.builder()
+                                  .status(Status.ERROR)
+                                  .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
                                   .build()
                         )
                         .build()
@@ -71,7 +86,7 @@ public class GlobalExceptionHandler {
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
-            String errorMessage = messageSourceUtil.getLocalizedMessage(error.getDefaultMessage());
+            String errorMessage = messageSourceUtils.getLocalizedMessage(error.getDefaultMessage());
             validationErrors.put(fieldName, errorMessage);
         });
 
