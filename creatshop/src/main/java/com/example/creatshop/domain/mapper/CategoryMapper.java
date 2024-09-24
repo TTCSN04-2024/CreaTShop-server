@@ -12,6 +12,7 @@ import com.example.creatshop.domain.dto.response.CategoryResponse;
 import com.example.creatshop.domain.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -20,4 +21,7 @@ public interface CategoryMapper {
     Category toCategory(CategoryRequest request);
 
     CategoryResponse toCategoryResponse(Category category);
+
+    @Mapping(target = "type", ignore = true)
+    void updateCategory(CategoryRequest request, @MappingTarget Category category);
 }

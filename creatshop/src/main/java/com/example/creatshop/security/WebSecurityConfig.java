@@ -7,6 +7,7 @@ package com.example.creatshop.security;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.Endpoint;
 import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
@@ -43,11 +44,6 @@ public class WebSecurityConfig {
     @NonFinal
     String CATCH_ALL_WILDCARD = "/**";
 
-    @NonFinal
-    String[] ADMIN_ENDPOINTS = {
-            "/api/v1/categories"
-    };
-
     JwtAuthEntryPoint      authEntryPoint;
     AuthTokenFilter        authTokenFilter;
     AuthenticationProvider authenticationProvider;
@@ -74,10 +70,9 @@ public class WebSecurityConfig {
                          }));
             })
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(HttpMethod.POST, ADMIN_ENDPOINTS).hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, ADMIN_ENDPOINTS).hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, ADMIN_ENDPOINTS).hasRole("ADMIN")
-                    .requestMatchers(CATCH_ALL_WILDCARD).permitAll()
+                    auth.requestMatchers(HttpMethod.GET, Endpoint.V1.Category.PREFIX).permitAll()
+                        .requestMatchers(Endpoint.V1.Category.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")
+                        .requestMatchers(CATCH_ALL_WILDCARD).permitAll()
             )
             .authenticationProvider(authenticationProvider);
 

@@ -14,4 +14,6 @@ import com.example.creatshop.domain.dto.response.CategoryResponse;
 
 public interface CategoryService {
     GlobalResponse<Meta, CategoryResponse> createCategory(CategoryRequest request);
+
+    GlobalResponse<Meta, CategoryResponse> updateCategory(Integer id, CategoryRequest request);
 }
