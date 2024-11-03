@@ -36,6 +36,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,6 +114,43 @@ public class ProductServiceImpl implements ProductService {
 
         return GlobalResponse.<Meta, ProductResponse>builder()
                              .meta(Meta.builder().status(Status.ERROR).build())
+                             .data(response).build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, ProductResponse> updateProduct(Integer id, ProductRequest request) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Product.NOT_FOUND_BY_ID));
+        productMapper.updateProduct(request, product);
+
+        if (!Objects.isNull(request.getStaticImg())) {
+            try {
+                product.setImageStaticUrl(cloudinaryUtils.getUrlFromFile(request.getStaticImg()));
+            }catch (Exception ex) {
+                throw new UploadFileException(ErrorMessage.Product.ERR_FILE_UPLOAD);
+            }
+        }
+
+        if(!Objects.isNull(request.getDynamicImg())) {
+            try {
+                product.setImageDynamicUrl(cloudinaryUtils.getUrlFromFile(request.getDynamicImg()));
+            } catch (Exception ex) {
+                throw new UploadFileException(ErrorMessage.Product.ERR_FILE_UPLOAD);
+            }
+        }
+
+        if (!Objects.isNull(request.getName())) {
+            List<ProductVariant> list = variantRepository.findAllByProduct(product);
+            for (var item : list) {
+                item.setName(request.getName());
+                variantRepository.save(item);
+            }
+        }
+
+        product = productRepository.save(product);
+        ProductResponse response = getProductResponse(product);
+
+        return GlobalResponse.<Meta, ProductResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response).build();
     }
 

@@ -50,4 +50,11 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productService.getProduct(id));
     }
+
+    @PutMapping(Endpoint.V1.Product.UPDATE_PRODUCT)
+    public ResponseEntity<GlobalResponse<Meta, ProductResponse>> updateProduct(@PathVariable(name = "productId") Integer id, @ModelAttribute ProductRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.updateProduct(id, request));
+    }
 }
