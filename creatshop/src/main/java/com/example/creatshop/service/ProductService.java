@@ -20,4 +20,6 @@ public interface ProductService {
     GlobalResponse<Meta, List<ProductResponse>> getProducts();
 
     GlobalResponse<Meta, ProductResponse> getProduct(Integer id);
+
+    GlobalResponse<Meta, ProductResponse> updateProduct(Integer id, ProductRequest request);
 }
