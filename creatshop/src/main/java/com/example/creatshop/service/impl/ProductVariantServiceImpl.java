@@ -28,6 +28,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -57,6 +60,50 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
         ProductVariantResponse response = variantMapper.toProductVariantResponse(variant);
 
+
+        return GlobalResponse.<Meta, ProductVariantResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response).build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<ProductVariantResponse>> getVariantByProductId(Integer id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Product.NOT_FOUND_BY_ID));
+        List<ProductVariant> list = variantRepository.findAllByProduct(product);
+        List<ProductVariantResponse> responses = new ArrayList<>();
+
+        for (var item : list) {
+            ProductVariantResponse response = variantMapper.toProductVariantResponse(item);
+            responses.add(response);
+        }
+
+        return GlobalResponse.<Meta, List<ProductVariantResponse>>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(responses)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<ProductVariantResponse>> getVariant() {
+        List<ProductVariant> list = variantRepository.findAll();
+        List<ProductVariantResponse> responses = new ArrayList<>();
+        for (var item : list) {
+            ProductVariantResponse response = variantMapper.toProductVariantResponse(item);
+            responses.add(response);
+        }
+
+        return GlobalResponse.<Meta, List<ProductVariantResponse>>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(responses)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, ProductVariantResponse> getVariant(Integer id) {
+        ProductVariant variant = variantRepository.findById(id)
+                                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID));
+
+        ProductVariantResponse response = variantMapper.toProductVariantResponse(variant);
 
         return GlobalResponse.<Meta, ProductVariantResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())

@@ -59,4 +59,8 @@ public interface ErrorMessage {
         String ERR_FILE_UPLOAD = "exception.product.file-format";
         String NOT_FOUND_BY_ID = "exception.product.not-found-by-id";
     }
+
+    public interface ProductVariant {
+        String NOT_FOUND_BY_ID = "exception.variant.not-found-by-id";
+    }
 }
