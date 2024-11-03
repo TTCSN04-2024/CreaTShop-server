@@ -24,4 +24,6 @@ public interface ProductVariantService {
     GlobalResponse<Meta, ProductVariantResponse> getVariant(Integer id);
 
     GlobalResponse<Meta, ProductVariantResponse> updateVariant(Integer id, ProductVariantRequest request);
+
+    GlobalResponse<Meta, String> deleteVariant(Integer id);
 }
