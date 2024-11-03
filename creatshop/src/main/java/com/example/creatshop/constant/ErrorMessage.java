@@ -57,5 +57,6 @@ public interface ErrorMessage {
 
     public interface Product {
         String ERR_FILE_UPLOAD = "exception.product.file-format";
+        String NOT_FOUND_BY_ID = "exception.product.not-found-by-id";
     }
 }
