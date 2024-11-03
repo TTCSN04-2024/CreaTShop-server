@@ -64,4 +64,11 @@ public class VariantController {
                 .status(HttpStatus.OK)
                 .body(variantService.updateVariant(id, request));
     }
+
+    @DeleteMapping(Endpoint.V1.Variant.DELETE_VARIANT)
+    public ResponseEntity<GlobalResponse<Meta, String>> deleteProductVariant(@PathVariable(name = "variantId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(variantService.deleteVariant(id));
+    }
 }

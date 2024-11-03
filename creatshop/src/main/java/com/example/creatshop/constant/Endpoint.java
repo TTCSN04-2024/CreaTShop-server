@@ -50,6 +50,7 @@ public interface Endpoint {
             String GET_VARIANT            = PREFIX;
             String GET_VARIANT_BY_ID      = PREFIX + "/{variantId}";
             String UPDATE_VARIANT         = PREFIX + "/{variantId}";
+            String DELETE_VARIANT         = PREFIX + "/{variantId}";
         }
     }
 }

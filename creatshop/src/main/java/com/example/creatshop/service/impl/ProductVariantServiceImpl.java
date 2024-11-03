@@ -133,4 +133,14 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response).build();
     }
+
+    @Override
+    public GlobalResponse<Meta, String> deleteVariant(Integer id) {
+        if (variantRepository.existsById(id)) {
+            return GlobalResponse.<Meta, String>builder()
+                                 .meta(Meta.builder().status(Status.SUCCESS).build())
+                                 .data("Delete product variant successfully!").build();
+        }
+        throw new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID);
+    }
 }
