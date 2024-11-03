@@ -17,4 +17,5 @@ import java.util.List;
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Integer> {
     List<ProductVariant> findAllByProduct(Product product);
+    void deleteAllByProduct(Product product);
 }

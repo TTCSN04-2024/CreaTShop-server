@@ -32,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -152,6 +153,17 @@ public class ProductServiceImpl implements ProductService {
         return GlobalResponse.<Meta, ProductResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response).build();
+    }
+
+    @Override
+    @Transactional
+    public GlobalResponse<Meta, String> deleteProduct(Integer id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Product.NOT_FOUND_BY_ID));
+        variantRepository.deleteAllByProduct(product);
+        productRepository.delete(product);
+        return GlobalResponse.<Meta, String>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data("Delete product successfully!").build();
     }
 
     private ProductResponse getProductResponse(Product item) {

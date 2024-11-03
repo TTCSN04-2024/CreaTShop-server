@@ -22,4 +22,6 @@ public interface ProductService {
     GlobalResponse<Meta, ProductResponse> getProduct(Integer id);
 
     GlobalResponse<Meta, ProductResponse> updateProduct(Integer id, ProductRequest request);
+
+    GlobalResponse<Meta, String> deleteProduct(Integer id);
 }
