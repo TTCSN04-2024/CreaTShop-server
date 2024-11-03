@@ -57,4 +57,11 @@ public class VariantController {
                 .status(HttpStatus.OK)
                 .body(variantService.getVariant(id));
     }
+
+    @PutMapping(Endpoint.V1.Variant.UPDATE_VARIANT)
+    public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> updateProductVariant(@PathVariable(name = "variantId") Integer id, @ModelAttribute ProductVariantRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(variantService.updateVariant(id, request));
+    }
 }
