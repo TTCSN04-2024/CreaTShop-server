@@ -57,4 +57,11 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productService.updateProduct(id, request));
     }
+
+    @DeleteMapping(Endpoint.V1.Product.DELETE_PRODUCT)
+    public ResponseEntity<GlobalResponse<Meta, String>> deleteProduct(@PathVariable(name = "productId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.deleteProduct(id));
+    }
 }

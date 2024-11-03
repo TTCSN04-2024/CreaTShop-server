@@ -38,7 +38,8 @@ public interface Endpoint {
             String CREATE_PRODUCT    = PREFIX;
             String GET_PRODUCT_BY_ID = PREFIX + "/{productId}";
             String GET_PRODUCT       = PREFIX;
-            String UPDATE_PRODUCT    = PREFIX + "/{productId}";
+            String UPDATE_PRODUCT = PREFIX + "/{productId}";
+            String    DELETE_PRODUCT = PREFIX + "/{productId}";
         }
 
         public interface Variant {
