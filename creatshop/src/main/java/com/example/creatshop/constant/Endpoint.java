@@ -32,5 +32,9 @@ public interface Endpoint {
             String DELETE_CATEGORY = PREFIX + "/{id}";
             String GET_CATEGORY    = PREFIX;
         }
+
+        public interface Product {
+            String CREATE_PRODUCT = V1.PREFIX + "/products";
+        }
     }
 }
