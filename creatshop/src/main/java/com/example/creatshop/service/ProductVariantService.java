@@ -22,4 +22,6 @@ public interface ProductVariantService {
     GlobalResponse<Meta, List<ProductVariantResponse>> getVariant();
 
     GlobalResponse<Meta, ProductVariantResponse> getVariant(Integer id);
+
+    GlobalResponse<Meta, ProductVariantResponse> updateVariant(Integer id, ProductVariantRequest request);
 }

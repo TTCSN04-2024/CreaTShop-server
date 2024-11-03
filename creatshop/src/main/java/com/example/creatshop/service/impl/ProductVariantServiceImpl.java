@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Log4j2
 @Service
@@ -102,6 +103,29 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     public GlobalResponse<Meta, ProductVariantResponse> getVariant(Integer id) {
         ProductVariant variant = variantRepository.findById(id)
                                                   .orElseThrow(() -> new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID));
+
+        ProductVariantResponse response = variantMapper.toProductVariantResponse(variant);
+
+        return GlobalResponse.<Meta, ProductVariantResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response).build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, ProductVariantResponse> updateVariant(Integer id, ProductVariantRequest request) {
+        ProductVariant variant = variantRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID));
+
+        variantMapper.updateProductVariant(request, variant);
+
+        if (!Objects.isNull(request.getImage())) {
+            try {
+                variant.setImageUrl(cloudinaryUtils.getUrlFromFile(request.getImage()));
+            } catch (Exception ex) {
+                throw new UploadFileException(ErrorMessage.Product.ERR_FILE_UPLOAD);
+            }
+        }
+
+        variant = variantRepository.save(variant);
 
         ProductVariantResponse response = variantMapper.toProductVariantResponse(variant);
 
