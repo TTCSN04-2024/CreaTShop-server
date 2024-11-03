@@ -118,7 +118,11 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse getProductResponse(Product item) {
         ProductResponse response = productMapper.toProductResponse(item);
+        List<ProductVariant> variants = variantRepository.findAllByProduct(item);
+        List<ProductVariantResponse> variantResponses = variants.stream().map(variant -> variantMapper.toProductVariantResponse(variant))
+                .collect(Collectors.toList());
 
+        response.setVariants(variantResponses);
         return response;
     }
 }

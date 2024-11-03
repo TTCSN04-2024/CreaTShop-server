@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductVariantResponse {
     Integer id;
+    String  name;
     String  color;
     String  size;
     Integer quantity;

@@ -39,5 +39,10 @@ public interface Endpoint {
             String GET_PRODUCT_BY_ID = PREFIX + "/{productId}";
             String GET_PRODUCT       = PREFIX;
         }
+
+        public interface Variant {
+            String PREFIX         = V1.PREFIX + "/variants";
+            String CREATE_VARIANT =  PREFIX + "/{productId}";
+        }
     }
 }
