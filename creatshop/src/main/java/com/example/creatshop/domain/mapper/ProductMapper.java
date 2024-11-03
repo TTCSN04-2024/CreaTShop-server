@@ -17,6 +17,6 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
     ProductResponse toProductResponse(Product product);
 
-    @Mapping(source = "variants", ignore = true, target = "productVariants")
+    @Mapping(target = "productVariants", ignore = true)
     Product toProduct(ProductRequest request);
 }

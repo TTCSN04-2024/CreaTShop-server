@@ -73,7 +73,6 @@ public class ProductServiceImpl implements ProductService {
             throw new UploadFileException(ErrorMessage.Product.ERR_FILE_UPLOAD);
         }
 
-
         product = productRepository.save(product);
 
         ProductResponse response = productMapper.toProductResponse(product);
@@ -83,5 +82,43 @@ public class ProductServiceImpl implements ProductService {
                 .meta(Meta.builder().status(Status.SUCCESS).build())
                 .data(response)
                 .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<ProductResponse>> getProducts() {
+        List<ProductResponse> responses = new ArrayList<>();
+
+        List<Product> list = productRepository.findAll();
+
+        for (var item : list) {
+            ProductResponse response = getProductResponse(item);
+
+            responses.add(response);
+        }
+
+        return GlobalResponse
+                .<Meta, List<ProductResponse>>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(responses)
+                .build();
+    }
+
+
+
+    @Override
+    public GlobalResponse<Meta, ProductResponse> getProduct(Integer id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Product.NOT_FOUND_BY_ID));
+        ProductResponse response = getProductResponse(product);
+
+
+        return GlobalResponse.<Meta, ProductResponse>builder()
+                             .meta(Meta.builder().status(Status.ERROR).build())
+                             .data(response).build();
+    }
+
+    private ProductResponse getProductResponse(Product item) {
+        ProductResponse response = productMapper.toProductResponse(item);
+
+        return response;
     }
 }

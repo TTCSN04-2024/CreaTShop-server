@@ -34,7 +34,10 @@ public interface Endpoint {
         }
 
         public interface Product {
-            String CREATE_PRODUCT = V1.PREFIX + "/products";
+            String PREFIX            = V1.PREFIX + "/products";
+            String CREATE_PRODUCT    = PREFIX;
+            String GET_PRODUCT_BY_ID = PREFIX + "/{productId}";
+            String GET_PRODUCT       = PREFIX;
         }
     }
 }
