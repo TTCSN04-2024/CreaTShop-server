@@ -70,7 +70,7 @@ public class WebSecurityConfig {
                          }));
             })
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(HttpMethod.GET, Endpoint.V1.Category.PREFIX).permitAll()
+                    auth.requestMatchers(HttpMethod.GET, Endpoint.V1.Category.PREFIX + CATCH_ALL_WILDCARD).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoint.V1.Product.PREFIX + CATCH_ALL_WILDCARD).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoint.V1.Variant.PREFIX + CATCH_ALL_WILDCARD).permitAll()
                         .requestMatchers(Endpoint.V1.Category.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")

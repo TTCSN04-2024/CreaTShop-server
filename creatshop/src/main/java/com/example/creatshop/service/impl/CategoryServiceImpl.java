@@ -144,4 +144,16 @@ public class CategoryServiceImpl implements CategoryService {
                              .data(responses)
                              .build();
     }
+
+    @Override
+    public GlobalResponse<Meta, CategoryResponse> getCategory(Integer id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Category.NOT_FOUND_BY_ID));
+
+        CategoryResponse response = categoryMapper.toCategoryResponse(category);
+
+        return GlobalResponse.<Meta, CategoryResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response)
+                             .build();
+    }
 }

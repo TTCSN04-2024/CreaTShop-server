@@ -23,4 +23,6 @@ public interface CategoryService {
     GlobalResponse<Meta, String> deleteCategory(Integer cateId);
 
     GlobalResponse<Meta, List<CategoryTypeResponse>> getAllCategories();
+
+    GlobalResponse<Meta, CategoryResponse> getCategory(Integer id);
 }

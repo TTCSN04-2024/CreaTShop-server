@@ -26,11 +26,12 @@ public interface Endpoint {
         }
 
         public interface Category {
-            String PREFIX          = V1.PREFIX + "/categories";
-            String CREATE_CATEGORY = PREFIX;
-            String UPDATE_CATEGORY = PREFIX + "/{id}";
-            String DELETE_CATEGORY = PREFIX + "/{id}";
-            String GET_CATEGORY    = PREFIX;
+            String PREFIX             = V1.PREFIX + "/categories";
+            String CREATE_CATEGORY    = PREFIX;
+            String UPDATE_CATEGORY    = PREFIX + "/{id}";
+            String DELETE_CATEGORY    = PREFIX + "/{id}";
+            String GET_CATEGORY       = PREFIX;
+            String GET_CATEGORY_BY_ID = PREFIX + "/{categoryId}";
         }
 
         public interface Product {
@@ -38,8 +39,8 @@ public interface Endpoint {
             String CREATE_PRODUCT    = PREFIX;
             String GET_PRODUCT_BY_ID = PREFIX + "/{productId}";
             String GET_PRODUCT       = PREFIX;
-            String UPDATE_PRODUCT = PREFIX + "/{productId}";
-            String    DELETE_PRODUCT = PREFIX + "/{productId}";
+            String UPDATE_PRODUCT    = PREFIX + "/{productId}";
+            String DELETE_PRODUCT    = PREFIX + "/{productId}";
         }
 
         public interface Variant {

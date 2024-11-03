@@ -59,4 +59,11 @@ public class CategoryController {
                 .status(HttpStatus.OK)
                 .body(categoryService.getAllCategories());
     }
+
+    @GetMapping(Endpoint.V1.Category.GET_CATEGORY_BY_ID)
+    public ResponseEntity<GlobalResponse<Meta, CategoryResponse>> getCategory(@PathVariable(name = "categoryId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getCategory(id));
+    }
 }
