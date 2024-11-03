@@ -52,5 +52,10 @@ public interface ErrorMessage {
 
     public interface Common {
         String ALREADY_EXIST_NAME = "exception.common.exist-by-name";
+        String NOT_FOUND_CATEGORY = "exception.common.not-found-category";
+    }
+
+    public interface Product {
+        String ERR_FILE_UPLOAD = "exception.product.file-format";
     }
 }

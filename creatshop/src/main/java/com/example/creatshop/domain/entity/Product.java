@@ -7,6 +7,8 @@ package com.example.creatshop.domain.entity;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.ErrorMessage;
+import com.example.creatshop.exception.NotFoundException;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -53,4 +56,12 @@ public class Product {
 
     @UpdateTimestamp
     Timestamp updatedAt;
+
+    public void addCategory(Category category) {
+        if (Objects.isNull(category)) {
+            throw new NotFoundException(ErrorMessage.Common.NOT_FOUND_CATEGORY);
+        }
+        category.getProducts().add(this);
+        this.setCategory(category);
+    }
 }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /*
  * @author HongAnh
@@ -37,6 +38,8 @@ public class ProductVariant {
 
     Integer quantity;
 
+    String imageUrl;
+
     @ManyToOne
     Product product;
 
@@ -45,4 +48,11 @@ public class ProductVariant {
 
     @UpdateTimestamp
     Timestamp updatedAt;
+
+    public void addProduct(Product product) {
+        if (!Objects.isNull(product)) {
+            setProduct(product);
+        }
+        product.getProductVariants().add(this);
+    }
 }
