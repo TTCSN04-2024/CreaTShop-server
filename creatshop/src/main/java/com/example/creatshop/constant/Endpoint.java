@@ -61,5 +61,10 @@ public interface Endpoint {
             String UPDATE_CART_ITEM    = PREFIX + "/{cartItemId}";
             String DELETE_CART_ITEM    = PREFIX + "/{cartItemId}";
         }
+
+        public interface Address {
+            String PREFIX      = V1.PREFIX + "/addresses";
+            String ADD_ADDRESS = PREFIX;
+        }
     }
 }

@@ -11,6 +11,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -52,4 +55,12 @@ public class Address {
 
     @ManyToOne
     User user;
+
+    public void addUser(User user) {
+        if (Objects.isNull(user.getAddresses())) {
+            user.setAddresses(new ArrayList<>());
+            user.getAddresses().add(this);
+        }
+        this.setUser(user);
+    }
 }

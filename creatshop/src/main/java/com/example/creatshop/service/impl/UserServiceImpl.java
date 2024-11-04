@@ -13,10 +13,12 @@ import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.UserRequest;
+import com.example.creatshop.domain.dto.response.AddressResponse;
 import com.example.creatshop.domain.dto.response.UserResponse;
 import com.example.creatshop.domain.entity.Cart;
 import com.example.creatshop.domain.entity.Role;
 import com.example.creatshop.domain.entity.User;
+import com.example.creatshop.domain.mapper.AddressMapper;
 import com.example.creatshop.domain.mapper.UserMapper;
 import com.example.creatshop.exception.BadRequestException;
 import com.example.creatshop.exception.NotFoundException;
@@ -48,7 +50,8 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     CartRepository cartRepository;
 
-    UserMapper userMapper;
+    UserMapper    userMapper;
+    AddressMapper addressMapper;
 
     PasswordEncoder passwordEncoder;
 
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userRepository.save(user);
-        }catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new SQLUniqueException(ErrorMessage.Common.ALREADY_EXIST_NAME);
         }
 
@@ -124,6 +127,7 @@ public class UserServiceImpl implements UserService {
                                   .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
 
         UserResponse response = userMapper.toUserResponse(user);
+        response.setAddress(getAddress(user));
 
         return GlobalResponse
                 .<Meta, UserResponse>builder()
@@ -139,6 +143,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         users.forEach(user -> {
             UserResponse response = userMapper.toUserResponse(user);
+            response.setAddress(getAddress(user));
 
             responses.add(response);
         });
@@ -148,5 +153,14 @@ public class UserServiceImpl implements UserService {
                 .meta(Meta.builder().status(Status.SUCCESS).build())
                 .data(responses)
                 .build();
+    }
+
+    private List<AddressResponse> getAddress(User user) {
+        List<AddressResponse> responses = new ArrayList<>();
+        for(var item : user.getAddresses()) {
+            AddressResponse response = addressMapper.toAddressResponse(item);
+            responses.add(response);
+        }
+        return responses;
     }
 }
