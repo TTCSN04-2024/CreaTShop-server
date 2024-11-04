@@ -66,6 +66,8 @@ public interface ErrorMessage {
     }
 
     public interface CartItem {
-        String ERR_QUANTITY_COUNT = "exception.cart-item.quantity-count";
+        String ERR_QUANTITY_COUNT      = "exception.cart-item.quantity-count";
+        String ERR_NOT_FOUND_BY_ID     = "exception.cart-item.not-found-by-id";
+        String ERR_NOT_FOUND_CART_ITEM = "exception.cart-item.not-found";
     }
 }
