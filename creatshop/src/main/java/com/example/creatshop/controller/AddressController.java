@@ -20,9 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,5 +35,19 @@ public class AddressController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(addressService.createAddress(userDetails.getUsername(), request));
+    }
+
+    @GetMapping(Endpoint.V1.Address.GET_ADDRESS)
+    public ResponseEntity<GlobalResponse<Meta, List<AddressResponse>>> getAddress(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(addressService.getAddress(userDetails.getUsername()));
+    }
+
+    @GetMapping(Endpoint.V1.Address.GET_ADDRESS_BY_ID)
+    public ResponseEntity<GlobalResponse<Meta, AddressResponse>> getAddressById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(name = "addressId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(addressService.getAddressById(userDetails.getUsername(), id));
     }
 }

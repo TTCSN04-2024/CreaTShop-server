@@ -70,4 +70,9 @@ public interface ErrorMessage {
         String ERR_NOT_FOUND_BY_ID     = "exception.cart-item.not-found-by-id";
         String ERR_NOT_FOUND_CART_ITEM = "exception.cart-item.not-found";
     }
+
+    public interface Address {
+        String ERR_NOT_FOUND_ADDRESS = "exception.address.not-found";
+        String ERR_NOT_FOUND_BY_ID   = "exception.address.not-found-id";
+    }
 }
