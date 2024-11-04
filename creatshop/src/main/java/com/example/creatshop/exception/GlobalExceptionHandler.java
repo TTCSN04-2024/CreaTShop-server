@@ -121,6 +121,21 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<GlobalResponse<Meta, BlankData>> handlerAuthenticationException(AuthenticationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(GlobalResponse
+                        .<Meta, BlankData>builder()
+                        .meta(Meta.builder()
+                                  .status(Status.ERROR)
+                                  .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
+                                  .build()
+                        )
+                        .build()
+                );
+    }
+
     private String getCustomMessage(DataIntegrityViolationException ex) {
         if (ex.getRootCause() instanceof SQLIntegrityConstraintViolationException) {
             SQLIntegrityConstraintViolationException sqlEx = (SQLIntegrityConstraintViolationException) ex.getRootCause();

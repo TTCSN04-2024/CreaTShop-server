@@ -52,5 +52,10 @@ public interface Endpoint {
             String UPDATE_VARIANT         = PREFIX + "/{variantId}";
             String DELETE_VARIANT         = PREFIX + "/{variantId}";
         }
+
+        public interface Cart {
+            String PREFIX        = V1.PREFIX + "/carts";
+            String ADD_CART_ITEM = PREFIX;
+        }
     }
 }

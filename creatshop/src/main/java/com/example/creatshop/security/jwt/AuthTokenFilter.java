@@ -7,6 +7,8 @@ package com.example.creatshop.security.jwt;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.ErrorMessage;
+import com.example.creatshop.exception.AuthenticationException;
 import com.example.creatshop.util.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -72,7 +74,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(AUTH_PREFIX)) {
             return headerAuth.substring(AUTH_PREFIX.length());
         }
-
-        return null;
+        throw new AuthenticationException(ErrorMessage.Auth.ERR_FORBIDDEN);
     }
 }

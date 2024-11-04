@@ -56,11 +56,16 @@ public interface ErrorMessage {
     }
 
     public interface Product {
-        String ERR_FILE_UPLOAD = "exception.product.file-format";
-        String NOT_FOUND_BY_ID = "exception.product.not-found-by-id";
+        String ERR_FILE_UPLOAD         = "exception.product.file-format";
+        String NOT_FOUND_BY_ID         = "exception.product.not-found-by-id";
+        String ERR_NOT_CONTAIN_VARIANT = "exception.product.not-contain-variant";
     }
 
     public interface ProductVariant {
         String NOT_FOUND_BY_ID = "exception.variant.not-found-by-id";
+    }
+
+    public interface CartItem {
+        String ERR_QUANTITY_COUNT = "exception.cart-item.quantity-count";
     }
 }
