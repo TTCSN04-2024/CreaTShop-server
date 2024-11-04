@@ -50,4 +50,11 @@ public class AddressController {
                 .status(HttpStatus.OK)
                 .body(addressService.getAddressById(userDetails.getUsername(), id));
     }
+
+    @DeleteMapping(Endpoint.V1.Address.DELETE_ADDRESS)
+    public ResponseEntity<GlobalResponse<Meta, String>> deleteAddress(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(name = "addressId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(addressService.deleteAddress(userDetails.getUsername(), id));
+    }
 }
