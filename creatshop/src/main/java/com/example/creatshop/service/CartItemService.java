@@ -12,6 +12,10 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.CartItemRequest;
 import com.example.creatshop.domain.dto.response.CartItemResponse;
 
+import java.util.List;
+
 public interface CartItemService {
     GlobalResponse<Meta, CartItemResponse> addCartItem(String username, CartItemRequest request);
+
+    GlobalResponse<Meta, List<CartItemResponse>> getCartItem(String username);
 }

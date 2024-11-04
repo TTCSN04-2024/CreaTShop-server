@@ -27,7 +27,10 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +87,30 @@ public class CartItemServiceImpl implements CartItemService {
         return GlobalResponse.<Meta, CartItemResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<CartItemResponse>> getCartItem(String username) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        List<CartItemResponse> responses = user.getCart().getCartItems()
+                                               .stream()
+                                               .map(item -> {
+                                                   CartItemResponse response = CartItemResponse.builder()
+                                                                                               .id(item.getId())
+                                                                                               .quantity(item.getQuantity())
+                                                                                               .build();
+                                                   response.setProductResponse(productMapper.toProductResponse(item.getProduct()));
+                                                   response.setProductDetail(variantMapper.toProductVariantResponse(item.getProductVariant()));
+                                                   return response;
+                                               })
+                                               .collect(Collectors.toList());
+
+        return GlobalResponse.<Meta, List<CartItemResponse>>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(responses)
                              .build();
     }
 }
