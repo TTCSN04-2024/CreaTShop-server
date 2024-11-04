@@ -113,4 +113,38 @@ public class CartItemServiceImpl implements CartItemService {
                              .data(responses)
                              .build();
     }
+
+    @Override
+    public GlobalResponse<Meta, CartItemResponse> getCartItemById(String username, Integer id) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        CartItem cartItem = cartItemRepository.findById(id)
+                                                      .orElseThrow(() -> new NotFoundException(ErrorMessage.CartItem.ERR_NOT_FOUND_BY_ID));
+
+        List<CartItem> list = user.getCart().getCartItems();
+        boolean flag = false;
+
+        for (var item : list) {
+            if (item.getId().equals(id)) {
+                flag = true;
+            }
+        }
+
+        if (!flag) {
+            throw new BadRequestException(ErrorMessage.CartItem.ERR_NOT_FOUND_CART_ITEM);
+        }
+
+        CartItemResponse response = CartItemResponse.builder()
+                                                    .id(cartItem.getId())
+                                                    .quantity(cartItem.getQuantity())
+                                                    .productDetail(variantMapper.toProductVariantResponse(cartItem.getProductVariant()))
+                                                    .productResponse(productMapper.toProductResponse(cartItem.getProduct()))
+                                                    .build();
+
+        return GlobalResponse.<Meta, CartItemResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response)
+                             .build();
+    }
 }

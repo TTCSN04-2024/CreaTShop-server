@@ -18,4 +18,6 @@ public interface CartItemService {
     GlobalResponse<Meta, CartItemResponse> addCartItem(String username, CartItemRequest request);
 
     GlobalResponse<Meta, List<CartItemResponse>> getCartItem(String username);
+
+    GlobalResponse<Meta, CartItemResponse> getCartItemById(String username, Integer id);
 }

@@ -54,9 +54,10 @@ public interface Endpoint {
         }
 
         public interface Cart {
-            String PREFIX        = V1.PREFIX + "/carts";
-            String ADD_CART_ITEM = PREFIX;
-            String GET_CART_ITEM = PREFIX;
+            String PREFIX              = V1.PREFIX + "/carts";
+            String ADD_CART_ITEM       = PREFIX;
+            String GET_CART_ITEM       = PREFIX;
+            String GET_CART_ITEM_BY_ID = PREFIX + "/{cartItemId}";
         }
     }
 }
