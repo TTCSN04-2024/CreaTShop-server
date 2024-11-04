@@ -67,6 +67,7 @@ public interface Endpoint {
             String ADD_ADDRESS       = PREFIX;
             String GET_ADDRESS       = PREFIX;
             String GET_ADDRESS_BY_ID = PREFIX + "/{addressId}";
+            String DELETE_ADDRESS    = PREFIX + "/{addressId}";
         }
     }
 }

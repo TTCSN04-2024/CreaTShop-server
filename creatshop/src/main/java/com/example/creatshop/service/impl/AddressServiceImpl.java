@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,29 @@ public class AddressServiceImpl implements AddressService {
         return GlobalResponse.<Meta, AddressResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response)
+                             .build();
+    }
+
+    @Override
+    @Transactional
+    public GlobalResponse<Meta, String> deleteAddress(String username, Integer id) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        boolean check = checkAddress(user.getAddresses(), id);
+
+        if (!check) {
+            throw new BadRequestException(ErrorMessage.Address.ERR_NOT_FOUND_ADDRESS);
+        }
+
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Address.ERR_NOT_FOUND_BY_ID));
+
+        user.getAddresses().remove(address);
+
+        return GlobalResponse.<Meta, String>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data("Delete address successfully!")
                              .build();
     }
 

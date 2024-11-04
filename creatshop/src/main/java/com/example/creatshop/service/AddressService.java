@@ -20,4 +20,6 @@ public interface AddressService {
     GlobalResponse<Meta, List<AddressResponse>> getAddress(String username);
 
     GlobalResponse<Meta, AddressResponse> getAddressById(String username, Integer id);
+
+    GlobalResponse<Meta, String> deleteAddress(String username, Integer id);
 }
