@@ -22,4 +22,6 @@ public interface AddressService {
     GlobalResponse<Meta, AddressResponse> getAddressById(String username, Integer id);
 
     GlobalResponse<Meta, String> deleteAddress(String username, Integer id);
+
+    GlobalResponse<Meta, AddressResponse> updateAddress(String username, Integer id, AddressRequest request);
 }
