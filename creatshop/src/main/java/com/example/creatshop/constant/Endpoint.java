@@ -59,6 +59,7 @@ public interface Endpoint {
             String GET_CART_ITEM       = PREFIX;
             String GET_CART_ITEM_BY_ID = PREFIX + "/{cartItemId}";
             String UPDATE_CART_ITEM    = PREFIX + "/{cartItemId}";
+            String DELETE_CART_ITEM    = PREFIX + "/{cartItemId}";
         }
     }
 }

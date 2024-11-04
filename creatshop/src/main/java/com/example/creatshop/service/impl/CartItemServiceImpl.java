@@ -123,13 +123,7 @@ public class CartItemServiceImpl implements CartItemService {
                                                       .orElseThrow(() -> new NotFoundException(ErrorMessage.CartItem.ERR_NOT_FOUND_BY_ID));
 
         List<CartItem> list = user.getCart().getCartItems();
-        boolean flag = false;
-
-        for (var item : list) {
-            if (item.getId().equals(id)) {
-                flag = true;
-            }
-        }
+        boolean flag = checkItemInCart(id, list);
 
         if (!flag) {
             throw new BadRequestException(ErrorMessage.CartItem.ERR_NOT_FOUND_CART_ITEM);
@@ -155,13 +149,7 @@ public class CartItemServiceImpl implements CartItemService {
 
 
         List<CartItem> list = user.getCart().getCartItems();
-        boolean flag = false;
-
-        for (var item : list) {
-            if (item.getId().equals(id)) {
-                flag = true;
-            }
-        }
+        boolean flag = checkItemInCart(id, list);
 
         if (!flag) {
             throw new BadRequestException(ErrorMessage.CartItem.ERR_NOT_FOUND_CART_ITEM);
@@ -182,4 +170,35 @@ public class CartItemServiceImpl implements CartItemService {
                              .data(response)
                              .build();
     }
+
+    @Override
+    public GlobalResponse<Meta, String> deleteCartItem(String username, Integer id) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        boolean flag = checkItemInCart(id, user.getCart().getCartItems());
+
+        if (!flag) {
+            throw new BadRequestException(ErrorMessage.CartItem.ERR_NOT_FOUND_CART_ITEM);
+        }
+
+        cartItemRepository.deleteById(id);
+
+        return GlobalResponse.<Meta, String>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data("Delete cart item successfully!")
+                             .build();
+    }
+
+    private boolean checkItemInCart(Integer id, List<CartItem> list) {
+        boolean flag = false;
+
+        for (var item : list) {
+            if (item.getId().equals(id)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 }

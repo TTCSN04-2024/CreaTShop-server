@@ -59,4 +59,11 @@ public class CartItemController {
                 .status(HttpStatus.OK)
                 .body(cartService.updateCartItem(userDetails.getUsername(), id, request));
     }
+
+    @DeleteMapping(Endpoint.V1.Cart.DELETE_CART_ITEM)
+    public ResponseEntity<GlobalResponse<Meta, String>> deleteCartItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(name = "cartItemId") Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.deleteCartItem(userDetails.getUsername(), id));
+    }
 }
