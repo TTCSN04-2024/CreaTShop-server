@@ -63,8 +63,10 @@ public interface Endpoint {
         }
 
         public interface Address {
-            String PREFIX      = V1.PREFIX + "/addresses";
-            String ADD_ADDRESS = PREFIX;
+            String PREFIX            = V1.PREFIX + "/addresses";
+            String ADD_ADDRESS       = PREFIX;
+            String GET_ADDRESS       = PREFIX;
+            String GET_ADDRESS_BY_ID = PREFIX + "/{addressId}";
         }
     }
 }
