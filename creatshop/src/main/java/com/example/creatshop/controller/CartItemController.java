@@ -52,4 +52,11 @@ public class CartItemController {
                 .status(HttpStatus.OK)
                 .body(cartService.getCartItemById(userDetails.getUsername(), id));
     }
+
+    @PutMapping(Endpoint.V1.Cart.UPDATE_CART_ITEM)
+    public ResponseEntity<GlobalResponse<Meta, CartItemResponse>> updateCartItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(name = "cartItemId") Integer id, @RequestBody CartItemRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.updateCartItem(userDetails.getUsername(), id, request));
+    }
 }
