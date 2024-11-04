@@ -119,6 +119,31 @@ public class AddressServiceImpl implements AddressService {
                              .build();
     }
 
+    @Override
+    public GlobalResponse<Meta, AddressResponse> updateAddress(String username, Integer id, AddressRequest request) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+        boolean check = checkAddress(user.getAddresses(), id);
+
+        if (!check) {
+            throw new BadRequestException(ErrorMessage.Address.ERR_NOT_FOUND_ADDRESS);
+        }
+
+        Address address = addressRepository.findById(id)
+                                           .orElseThrow(() -> new NotFoundException(ErrorMessage.Address.ERR_NOT_FOUND_BY_ID));
+
+        addressMapper.updateAddress(request, address);
+
+        address = addressRepository.save(address);
+
+        AddressResponse response = addressMapper.toAddressResponse(address);
+
+        return GlobalResponse.<Meta, AddressResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response)
+                             .build();
+    }
+
     private boolean checkAddress(List<Address> addresses, Integer id) {
         for (var item : addresses) {
             if (item.getId().equals(id)) {
