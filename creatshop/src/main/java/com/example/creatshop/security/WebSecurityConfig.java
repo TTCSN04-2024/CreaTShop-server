@@ -78,6 +78,8 @@ public class WebSecurityConfig {
                         .requestMatchers(Endpoint.V1.Variant.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")
                         .requestMatchers(Endpoint.V1.Cart.PREFIX + CATCH_ALL_WILDCARD).authenticated()
                         .requestMatchers(Endpoint.V1.Address.PREFIX + CATCH_ALL_WILDCARD).authenticated()
+                        .requestMatchers(Endpoint.V1.Order.PREFIX + CATCH_ALL_WILDCARD).authenticated()
+                        .requestMatchers(Endpoint.V1.Payment.PREFIX + CATCH_ALL_WILDCARD).authenticated()
                         .requestMatchers(CATCH_ALL_WILDCARD).permitAll()
             )
             .authenticationProvider(authenticationProvider);

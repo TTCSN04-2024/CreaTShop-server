@@ -14,7 +14,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -47,4 +49,12 @@ public class OrderDetail {
 
     @UpdateTimestamp
     Timestamp updatedAt;
+
+    public void addItem(OrderItem orderItem) {
+        if (Objects.isNull(items)) {
+            items = new ArrayList<>();
+        }
+        items.add(orderItem);
+        orderItem.setOrderDetail(this);
+    }
 }

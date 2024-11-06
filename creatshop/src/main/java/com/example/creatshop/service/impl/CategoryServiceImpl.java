@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new AlreadyExistsException(ErrorMessage.Category.EXISTS_BY_NAME);
         }
 
-        if (!enumUtils.isValidEnumValue(request.getType())) {
+        if (enumUtils.isValidCategoryValue(request.getType())) {
             throw new NotFoundException(ErrorMessage.Category.NOT_FOUND_TYPE);
         }
 
@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new AlreadyExistsException(ErrorMessage.Category.EXISTS_BY_NAME);
         }
 
-        if (StringUtils.hasText(request.getType()) && !enumUtils.isValidEnumValue(request.getType())) {
+        if (StringUtils.hasText(request.getType()) && enumUtils.isValidCategoryValue(request.getType())) {
             throw new NotFoundException(ErrorMessage.Category.NOT_FOUND_TYPE);
         }
 

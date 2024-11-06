@@ -70,5 +70,16 @@ public interface Endpoint {
             String DELETE_ADDRESS    = PREFIX + "/{addressId}";
             String UPDATE_ADDRESS    = PREFIX + "/{addressId}";
         }
+
+        public interface Order {
+            String PREFIX              = V1.PREFIX + "/orders";
+            String CREATE_ORDER_DETAIL = PREFIX;
+        }
+
+        public interface Payment {
+            String PREFIX                = V1.PREFIX + "/payments";
+            String CREATE_PAYMENT_METHOD = PREFIX;
+            String UPDATE_PAYMENT_STATUS = PREFIX + "/{paymentId}";
+        }
     }
 }

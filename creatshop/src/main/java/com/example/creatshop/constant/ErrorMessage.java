@@ -75,4 +75,8 @@ public interface ErrorMessage {
         String ERR_NOT_FOUND_ADDRESS = "exception.address.not-found";
         String ERR_NOT_FOUND_BY_ID   = "exception.address.not-found-id";
     }
+
+    public interface Payment {
+        String ERR_NOT_FOUND_BY_ID = "exception.payment.not-found-id";
+    }
 }
