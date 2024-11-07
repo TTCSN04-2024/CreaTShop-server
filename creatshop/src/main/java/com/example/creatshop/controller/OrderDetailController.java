@@ -24,6 +24,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -31,9 +37,18 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Log4j2
+@Tag(name = "Order API", description = "API cho các chức năng quản lý đơn hàng")
 public class OrderDetailController {
     OrderDetailService orderService;
 
+    @Operation(summary = "Tạo đơn hàng", description = "Tạo mới một đơn hàng cho người dùng.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Đơn hàng được tạo thành công",
+                         content = @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = OrderDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Yêu cầu không hợp lệ",
+                         content = @Content(mediaType = "application/json"))
+    })
     @PostMapping(Endpoint.V1.Order.CREATE_ORDER_DETAIL)
     public ResponseEntity<GlobalResponse<Meta, OrderDetailResponse>> createOrderDetail(@AuthenticationPrincipal UserDetails userDetails, @RequestBody OrderRequest request) {
         return ResponseEntity
@@ -41,6 +56,14 @@ public class OrderDetailController {
                 .body(orderService.createOrder(userDetails.getUsername(), request));
     }
 
+    @Operation(summary = "Hủy đơn hàng", description = "Hủy một đơn hàng theo ID thanh toán.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Đơn hàng đã bị hủy",
+                         content = @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = PaymentResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy đơn hàng hoặc ID thanh toán",
+                         content = @Content(mediaType = "application/json"))
+    })
     @PutMapping(Endpoint.V1.Order.CANCEL_ORDER_DETAIL)
     public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> cancelOrder(@AuthenticationPrincipal UserDetails userDetails,
                                                                              @PathVariable(name = "paymentId") Integer id) {
@@ -49,6 +72,12 @@ public class OrderDetailController {
                 .body(orderService.cancelOrder(userDetails.getUsername(), id));
     }
 
+    @Operation(summary = "Lấy đơn hàng của người dùng", description = "Lấy danh sách tất cả đơn hàng của người dùng hiện tại.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Danh sách đơn hàng của người dùng",
+                         content = @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = OrderDetailResponse.class)))
+    })
     @GetMapping(Endpoint.V1.Order.GET_ORDER_BY_USER)
     public ResponseEntity<GlobalResponse<Meta, List<OrderDetailResponse>>> getOrders(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity
