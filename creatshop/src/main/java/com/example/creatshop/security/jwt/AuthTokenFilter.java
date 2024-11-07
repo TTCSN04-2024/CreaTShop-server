@@ -74,6 +74,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(AUTH_PREFIX)) {
             return headerAuth.substring(AUTH_PREFIX.length());
         }
-        throw new AuthenticationException(ErrorMessage.Auth.ERR_FORBIDDEN);
+        return null;
     }
 }
