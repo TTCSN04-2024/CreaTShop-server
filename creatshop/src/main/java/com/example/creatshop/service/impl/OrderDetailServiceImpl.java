@@ -8,6 +8,7 @@ package com.example.creatshop.service.impl;
  */
 
 import com.example.creatshop.constant.ErrorMessage;
+import com.example.creatshop.constant.PaymentStatus;
 import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
@@ -15,11 +16,9 @@ import com.example.creatshop.domain.dto.request.OrderItemRequest;
 import com.example.creatshop.domain.dto.request.OrderRequest;
 import com.example.creatshop.domain.dto.response.OrderDetailResponse;
 import com.example.creatshop.domain.dto.response.OrderItemResponse;
+import com.example.creatshop.domain.dto.response.PaymentResponse;
 import com.example.creatshop.domain.entity.*;
-import com.example.creatshop.domain.mapper.OrderDetailMapper;
-import com.example.creatshop.domain.mapper.OrderItemMapper;
-import com.example.creatshop.domain.mapper.ProductMapper;
-import com.example.creatshop.domain.mapper.ProductVariantMapper;
+import com.example.creatshop.domain.mapper.*;
 import com.example.creatshop.exception.NotFoundException;
 import com.example.creatshop.repository.*;
 import com.example.creatshop.service.OrderDetailService;
@@ -48,6 +47,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     OrderItemMapper          orderItemMapper;
     ProductMapper            productMapper;
     ProductVariantMapper     variantMapper;
+    UserMapper               userMapper;
+    PaymentMapper            paymentMapper;
 
     @Override
     public GlobalResponse<Meta, OrderDetailResponse> createOrder(String username, OrderRequest request) {
@@ -71,22 +72,32 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             ProductVariant variant = variantRepository.findById(item.getVariantId())
                                                       .orElseThrow(() -> new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID));
 
+            if (variant.getQuantity() < item.getQuantity()) {
+                throw new IllegalArgumentException("Quantity requested exceeds available stock.");
+            }
+
             OrderItem orderItem = OrderItem.builder()
                                            .product(product)
                                            .variant(variant)
                                            .orderDetail(orderDetail)
                                            .quantity(item.getQuantity())
-                                           .orderDetail(orderDetail)
                                            .build();
 
             Double itemTotal = calculatorTotal(item.getProductId(), item.getQuantity());
             total += itemTotal;
+
+            variant.setQuantity(variant.getQuantity() - item.getQuantity());
+            variantRepository.save(variant);
 
             orderItems.add(orderItem);
         }
 
         orderDetail.setTotal(total);
         orderDetail = orderDetailRepository.save(orderDetail);
+
+        paymentDetail.setOrderDetail(orderDetail);
+        paymentDetailRepository.save(paymentDetail);
+
         orderItems = new ArrayList<>(orderItemRepository.saveAll(orderItems));
 
         OrderDetailResponse response = orderDetailMapper.toOrderDetailResponse(orderDetail);
@@ -95,15 +106,76 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                                              OrderItemResponse itemResponse = orderItemMapper.toOrderItemResponse(orderItem);
                                              itemResponse.setProduct(productMapper.toProductResponse(orderItem.getProduct()));
                                              itemResponse.setVariant(variantMapper.toProductVariantResponse(orderItem.getVariant()));
-
                                              return itemResponse;
                                          })
                                          .collect(Collectors.toList())
         );
+        response.setUser(userMapper.toUserResponse(user));
+        response.setPayment(paymentMapper.toPaymentResponse(paymentDetail));
 
         return GlobalResponse.<Meta, OrderDetailResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(response)
+                             .build();
+    }
+
+
+    @Override
+    public GlobalResponse<Meta, PaymentResponse> cancelOrder(String username, Integer id) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        PaymentDetail paymentDetail = paymentDetailRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Payment.ERR_NOT_FOUND_BY_ID));
+
+        if (!paymentDetail.getStatus().equals(PaymentStatus.PENDING)) {
+            throw new IllegalArgumentException("Only pending payments can be canceled.");
+        }
+
+        List<OrderItem> orderItems = paymentDetail.getOrderDetail().getItems();
+
+        for (OrderItem orderItem : orderItems) {
+            ProductVariant variant = orderItem.getVariant();
+            variant.setQuantity(variant.getQuantity() + orderItem.getQuantity());
+            variantRepository.save(variant);
+        }
+
+        paymentDetail.setStatus(PaymentStatus.CANCELED);
+        paymentDetail = paymentDetailRepository.save(paymentDetail);
+
+        PaymentResponse response = paymentMapper.toPaymentResponse(paymentDetail);
+
+        return GlobalResponse.<Meta, PaymentResponse>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(response)
+                             .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, List<OrderDetailResponse>> getOrders(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        List<OrderDetail> orderDetails = orderDetailRepository.findAllByUser(user);
+
+
+        List<OrderDetailResponse> responses = orderDetails.stream()
+                                                          .map(orderDetail -> {
+                                                              OrderDetailResponse response = orderDetailMapper.toOrderDetailResponse(orderDetail);
+                                                              List<OrderItemResponse> items = orderDetail.getItems()
+                                                                                                         .stream()
+                                                                                                         .map(orderItem -> orderItemMapper.toOrderItemResponse(orderItem))
+                                                                                                         .collect(Collectors.toList());
+                                                              response.setOrderItems(items);
+                                                              response.setPayment(paymentMapper.toPaymentResponse(orderDetail.getPaymentDetail()));
+
+                                                              return response;
+                                                          })
+                                                          .toList();
+
+        return GlobalResponse.<Meta, List<OrderDetailResponse>>builder()
+                             .meta(Meta.builder().status(Status.SUCCESS).build())
+                             .data(responses)
                              .build();
     }
 

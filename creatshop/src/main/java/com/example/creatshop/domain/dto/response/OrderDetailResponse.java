@@ -22,11 +22,11 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailResponse {
-    Integer id;
-    User user;
-    PaymentDetail payment;
-    Double total;
-    Timestamp createdAt;
-    Timestamp updatedAt;
+    Integer                 id;
+    UserResponse            user;
+    PaymentResponse         payment;
+    Double                  total;
+    Timestamp               createdAt;
+    Timestamp               updatedAt;
     List<OrderItemResponse> orderItems;
 }

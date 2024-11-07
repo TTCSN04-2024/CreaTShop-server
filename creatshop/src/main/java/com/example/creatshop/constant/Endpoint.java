@@ -74,6 +74,8 @@ public interface Endpoint {
         public interface Order {
             String PREFIX              = V1.PREFIX + "/orders";
             String CREATE_ORDER_DETAIL = PREFIX;
+            String CANCEL_ORDER_DETAIL = PREFIX + "/{paymentId}";
+            String GET_ORDER_BY_USER   = PREFIX;
         }
 
         public interface Payment {

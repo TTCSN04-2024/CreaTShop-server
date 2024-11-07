@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentResponse {
     Integer   id;
-    Double   amount;
+    Double    amount;
     String    provider;
     String    status;
     Timestamp createdAt;
