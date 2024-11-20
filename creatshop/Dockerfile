@@ -1,14 +1,24 @@
-# Sử dụng hình ảnh Java chính thức
-FROM openjdk:17-jdk-slim
+# Stage 1: Build ứng dụng bằng Maven
+FROM maven:3.8.4-openjdk-17 AS build
 
-# Đặt thư mục làm việc trong container
 WORKDIR /app
 
-# Sao chép file JAR của ứng dụng vào container
-COPY target/*.jar app.jar
+# Sao chép toàn bộ mã nguồn vào container
+COPY . .
 
-# Expose cổng mà ứng dụng Spring Boot sử dụng
+# Build ứng dụng và tạo file JAR
+RUN mvn clean install
+
+# Stage 2: Tạo image ứng dụng bằng OpenJDK
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Sao chép file .jar đã build từ stage trước
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose cổng 8080
 EXPOSE 8080
 
-# Lệnh chạy ứng dụng
+# Lệnh chạy ứng dụng Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
