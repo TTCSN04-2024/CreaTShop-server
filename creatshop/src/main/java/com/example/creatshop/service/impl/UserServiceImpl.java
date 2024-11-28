@@ -77,14 +77,14 @@ public class UserServiceImpl implements UserService {
         User savedUser = null;
 
         try {
-            userRepository.save(user);
+            savedUser = userRepository.save(user);
         } catch (DataIntegrityViolationException ex) {
             throw new SQLUniqueException(ErrorMessage.Common.ALREADY_EXIST_NAME);
         }
 
         if (Objects.isNull(savedUser.getCart())) {
             Cart cart = Cart.builder()
-                            .build();
+                    .build();
 
             savedUser.addCart(cart);
 
