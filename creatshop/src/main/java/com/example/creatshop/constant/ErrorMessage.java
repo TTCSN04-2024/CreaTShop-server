@@ -21,6 +21,7 @@ public interface ErrorMessage {
         String ERR_NOT_LOGIN         = "exception.auth.not-login";
         String ERR_MISSING_PREFIX    = "exception.auth.missing-prefix";
         String ERR_FORBIDDEN         = "exception.auth.forbidden";
+        String ERR_ACCOUNT_BANNED    = "exception.auth.account-banned";
     }
 
     interface Validate {
@@ -42,6 +43,7 @@ public interface ErrorMessage {
     public interface User {
         String ERR_NOT_FOUND_USERNAME      = "exception.user.not-found-username";
         String ERR_CAN_NOT_UPDATE_USERNAME = "exception.user.not-update-username";
+        String ERR_NOT_FOUND_ID = "exception.user.not-found-id";
     }
 
     public interface Category {

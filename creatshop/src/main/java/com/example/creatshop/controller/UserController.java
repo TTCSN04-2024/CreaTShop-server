@@ -102,4 +102,12 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(userService.getUsers());
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(Endpoint.V1.User.BANNED_ACCOUNT)
+    public ResponseEntity<GlobalResponse<Meta, UserResponse>> bannedAccount(@PathVariable(name = "userId") String userId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.bannedAccount(userId));
+    }
 }

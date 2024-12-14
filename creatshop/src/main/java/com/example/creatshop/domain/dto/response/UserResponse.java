@@ -27,5 +27,6 @@ public class UserResponse {
     String email;
     String phoneNumber;
     Date   dateOfBirth;
+    String status;
     List<AddressResponse> address;
 }

@@ -23,6 +23,7 @@ public interface Endpoint {
             String UPDATE_USER = PREFIX;
             String GET_USER    = PREFIX + "/me";
             String GET_USERS   = PREFIX;
+            String BANNED_ACCOUNT = PREFIX + "/{userId}";
         }
 
         public interface Category {

@@ -7,6 +7,7 @@ package com.example.creatshop.config;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.AccountStatus;
 import com.example.creatshop.constant.RoleType;
 import com.example.creatshop.domain.entity.Cart;
 import com.example.creatshop.domain.entity.Role;
@@ -68,15 +69,22 @@ public class WebConfig {
 
     @Bean
     public boolean initSystem(RoleRepository roleRepository, CartRepository cartRepository, PasswordEncoder encoder) {
-        Role role = null;
+        Role roleAdmin = null;
 
         if (!roleRepository.existsByType(RoleType.ROLE_ADMIN)) {
-            role = Role.builder()
+            roleAdmin = Role.builder()
                        .type(RoleType.ROLE_ADMIN)
                        .description("This role for admin")
                        .build();
 
-            role = roleRepository.save(role);
+            roleAdmin = roleRepository.save(roleAdmin);
+
+            Role roleUser = Role.builder()
+                    .type(RoleType.ROLE_USER)
+                    .description("This role for user")
+                    .build();
+
+            roleUser = roleRepository.save(roleUser);
         }
 
         if (!userRepository.existsByUsername("lehonganh")) {
@@ -87,15 +95,62 @@ public class WebConfig {
                             .password(encoder.encode("Password123!"))
                             .phoneNumber("039125678")
                             .email("le292620@gmail.com")
-                            .role(role)
+                    .status(AccountStatus.ACTIVE)
+                            .role(roleAdmin)
                             .build();
 
+            User user1 = User.builder()
+                    .firstName("Le Phuong")
+                    .lastName("Anh")
+                    .username("lephuonganh")
+                    .password(encoder.encode("Password123!"))
+                    .phoneNumber("039125678")
+                    .email("lephuonganhktpm1k17@gmail.com")
+                    .status(AccountStatus.ACTIVE)
+                    .role(roleAdmin)
+                    .build();
+
+            User user2 = User.builder()
+                    .firstName("Vu Thi")
+                    .lastName("Hong Nhung")
+                    .username("vuthihongnhung")
+                    .password(encoder.encode("Password123!"))
+                    .phoneNumber("039125678")
+                    .email("vthn3003@gmail.com")
+                    .status(AccountStatus.ACTIVE)
+                    .role(roleAdmin)
+                    .build();
+
+            User user3 = User.builder()
+                    .firstName("Nguyen Thi")
+                    .lastName("Anh Phuong")
+                    .username("nguyenthianhphuong")
+                    .password(encoder.encode("Password123!"))
+                    .phoneNumber("039125678")
+                    .email("nguyenthianhphuong2000tp@gmail.com")
+                    .status(AccountStatus.ACTIVE)
+                    .role(roleAdmin)
+                    .build();
+
             Cart cart = Cart.builder().build();
+            Cart cart1 = Cart.builder().build();
+            Cart cart2 = Cart.builder().build();
+            Cart cart3 = Cart.builder().build();
+
             cart = cartRepository.save(cart);
+            cart1 = cartRepository.save(cart1);
+            cart2 = cartRepository.save(cart2);
+            cart3 = cartRepository.save(cart3);
 
             user.setCart(cart);
+            user1.setCart(cart1);
+            user2.setCart(cart2);
+            user3.setCart(cart3);
 
             userRepository.save(user);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
         }
 
         return true;

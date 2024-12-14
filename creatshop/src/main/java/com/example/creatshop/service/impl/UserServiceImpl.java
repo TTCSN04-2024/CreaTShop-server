@@ -7,6 +7,7 @@ package com.example.creatshop.service.impl;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.AccountStatus;
 import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.RoleType;
 import com.example.creatshop.constant.Status;
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
                                   .orElseThrow(() -> new NotFoundException(ErrorMessage.Role.NOT_FOUND_BY_TYPE));
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setStatus(AccountStatus.ACTIVE);
 
         User savedUser = null;
 
@@ -152,6 +154,23 @@ public class UserServiceImpl implements UserService {
                 .<Meta, List<UserResponse>>builder()
                 .meta(Meta.builder().status(Status.SUCCESS).build())
                 .data(responses)
+                .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, UserResponse> bannedAccount(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+
+        user.setStatus(AccountStatus.BANNED);
+
+        user = userRepository.save(user);
+
+        UserResponse response = userMapper.toUserResponse(user);
+
+        return GlobalResponse.<Meta, UserResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
                 .build();
     }
 

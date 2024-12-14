@@ -7,6 +7,8 @@ package com.example.creatshop.service.impl;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.AccountStatus;
+import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.Status;
 import com.example.creatshop.constant.Validate;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
@@ -14,6 +16,7 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.LoginRequest;
 import com.example.creatshop.domain.dto.response.AuthResponse;
 import com.example.creatshop.domain.entity.User;
+import com.example.creatshop.exception.BadRequestException;
 import com.example.creatshop.repository.UserRepository;
 import com.example.creatshop.service.AuthService;
 import com.example.creatshop.util.JwtUtils;
@@ -53,20 +56,25 @@ public class AuthServiceImpl implements AuthService {
 
         String accessToken = jwtUtils.generateJwtToken(authentication);
         User loggedUser = (User) authentication.getPrincipal();
-        String roles = loggedUser
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+
+        if (AccountStatus.ACTIVE.equals(loggedUser.getStatus())) {
+            String roles = loggedUser
+                    .getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(","));
 
 
-        return GlobalResponse
-                .<Meta, AuthResponse>builder()
-                .meta(Meta.builder().status(Status.SUCCESS).build())
-                .data(AuthResponse.builder()
-                                  .accessToken(accessToken)
-                                  .roles(roles)
-                                  .type("Bearer").build())
-                .build();
+            return GlobalResponse
+                    .<Meta, AuthResponse>builder()
+                    .meta(Meta.builder().status(Status.SUCCESS).build())
+                    .data(AuthResponse.builder()
+                            .accessToken(accessToken)
+                            .roles(roles)
+                            .type("Bearer").build())
+                    .build();
+        }
+        throw new BadRequestException(ErrorMessage.Auth.ERR_ACCOUNT_BANNED);
+
     }
 }

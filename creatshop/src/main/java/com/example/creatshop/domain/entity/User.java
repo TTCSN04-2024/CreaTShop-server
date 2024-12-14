@@ -7,6 +7,7 @@ package com.example.creatshop.domain.entity;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -50,13 +51,17 @@ public class User implements UserDetails {
     @Column(nullable = false)
     String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String email;
 
     @Column(nullable = false)
     String phoneNumber;
 
     Date dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    AccountStatus status;
 
     @CreationTimestamp
     Timestamp createdAt;
