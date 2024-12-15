@@ -8,6 +8,7 @@ package com.example.creatshop.service.impl;
  */
 
 import com.example.creatshop.constant.ErrorMessage;
+import com.example.creatshop.constant.OrderStatus;
 import com.example.creatshop.constant.PaymentStatus;
 import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
@@ -22,6 +23,7 @@ import com.example.creatshop.domain.mapper.*;
 import com.example.creatshop.exception.NotFoundException;
 import com.example.creatshop.repository.*;
 import com.example.creatshop.service.OrderDetailService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -93,6 +95,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         }
 
         orderDetail.setTotal(total);
+        orderDetail.setStatus(OrderStatus.Processing);
+
         orderDetail = orderDetailRepository.save(orderDetail);
 
         paymentDetail.setOrderDetail(orderDetail);
@@ -106,11 +110,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                                              OrderItemResponse itemResponse = orderItemMapper.toOrderItemResponse(orderItem);
                                              itemResponse.setProduct(productMapper.toProductResponse(orderItem.getProduct()));
                                              itemResponse.setVariant(variantMapper.toProductVariantResponse(orderItem.getVariant()));
+
                                              return itemResponse;
                                          })
                                          .collect(Collectors.toList())
         );
         response.setUser(userMapper.toUserResponse(user));
+        response.setStatus(orderDetail.getStatus().name());
         response.setPayment(paymentMapper.toPaymentResponse(paymentDetail));
 
         return GlobalResponse.<Meta, OrderDetailResponse>builder()
@@ -177,6 +183,58 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                              .meta(Meta.builder().status(Status.SUCCESS).build())
                              .data(responses)
                              .build();
+    }
+
+    @Override
+    public GlobalResponse<Meta, OrderDetailResponse> getOrder(Integer id) {
+        OrderDetail orderDetail = orderDetailRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.OrderDetail.ERR_NOT_FOUND_BY_ID));
+
+        OrderDetailResponse response = orderDetailMapper.toOrderDetailResponse(orderDetail);
+        response.setStatus(orderDetail.getStatus().name());
+
+        return GlobalResponse.<Meta, OrderDetailResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public GlobalResponse<Meta, OrderDetailResponse> moveToNextStatus(Integer id) {
+        OrderDetail orderDetail = orderDetailRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.OrderDetail.ERR_NOT_FOUND_BY_ID));
+
+        orderDetail.moveToNextStatus();
+
+        orderDetail = orderDetailRepository.save(orderDetail);
+
+        OrderDetailResponse response = orderDetailMapper.toOrderDetailResponse(orderDetail);
+        response.setStatus(orderDetail.getStatus().name());
+
+        return GlobalResponse.<Meta, OrderDetailResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public GlobalResponse<Meta, OrderDetailResponse> moveToPreviousStatus(Integer id) {
+        OrderDetail orderDetail = orderDetailRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.OrderDetail.ERR_NOT_FOUND_BY_ID));
+
+        orderDetail.moveToPreviousStatus();
+
+        orderDetail = orderDetailRepository.save(orderDetail);
+
+        OrderDetailResponse response = orderDetailMapper.toOrderDetailResponse(orderDetail);
+        response.setStatus(orderDetail.getStatus().name());
+
+        return GlobalResponse.<Meta, OrderDetailResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
     }
 
     private Double calculatorTotal(Integer productId, Integer quantity) {

@@ -16,6 +16,7 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.LoginRequest;
 import com.example.creatshop.domain.dto.response.AuthResponse;
 import com.example.creatshop.domain.entity.User;
+import com.example.creatshop.exception.AuthenticationException;
 import com.example.creatshop.exception.BadRequestException;
 import com.example.creatshop.repository.UserRepository;
 import com.example.creatshop.service.AuthService;
@@ -74,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
                             .type("Bearer").build())
                     .build();
         }
-        throw new BadRequestException(ErrorMessage.Auth.ERR_ACCOUNT_BANNED);
+        throw new AuthenticationException(ErrorMessage.Auth.ERR_ACCOUNT_BANNED);
 
     }
 }

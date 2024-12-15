@@ -81,4 +81,10 @@ public interface ErrorMessage {
     public interface Payment {
         String ERR_NOT_FOUND_BY_ID = "exception.payment.not-found-id";
     }
+
+    public interface OrderDetail {
+        String ERR_NOT_FOUND_BY_ID = "exception.order.not-found-id";
+        String ERR_ORDER_STATUS_COMPLETED = "exception.order.status.completed";
+        String ERR_ORDER_STATUS_FIRST = "exception.order.status.first";
+    }
 }

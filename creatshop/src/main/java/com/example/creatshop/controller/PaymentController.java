@@ -61,7 +61,8 @@ public class PaymentController {
                          content = @Content(mediaType = "application/json"))
     })
     @PutMapping(Endpoint.V1.Payment.UPDATE_PAYMENT_STATUS)
-    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> updatePayment(@RequestBody PaymentRequest request, @PathVariable(name = "paymentId") Integer id) {
+    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> updatePayment(@RequestBody PaymentRequest request,
+                                                                               @PathVariable(name = "paymentId") Integer id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(paymentService.updatePayment(id, request));

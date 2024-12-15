@@ -33,6 +33,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -74,6 +77,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, Endpoint.V1.Product.PREFIX + CATCH_ALL_WILDCARD).permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoint.V1.Variant.PREFIX + CATCH_ALL_WILDCARD).permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(Endpoint.V1.Order.MOVE_TO_NEXT_STATUS + CATCH_ALL_WILDCARD).hasRole("ADMIN")
                         .requestMatchers(Endpoint.V1.Category.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")
                         .requestMatchers(Endpoint.V1.Product.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")
                         .requestMatchers(Endpoint.V1.Variant.PREFIX + CATCH_ALL_WILDCARD).hasRole("ADMIN")
@@ -89,5 +93,21 @@ public class WebSecurityConfig {
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedMethod("GET");
+        configuration.addAllowedMethod("POST");
+        configuration.addAllowedMethod("PUT");
+        configuration.addAllowedMethod("DELETE");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(false);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

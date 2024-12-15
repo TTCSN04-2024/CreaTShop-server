@@ -77,6 +77,9 @@ public interface Endpoint {
             String CREATE_ORDER_DETAIL = PREFIX;
             String CANCEL_ORDER_DETAIL = PREFIX + "/{paymentId}";
             String GET_ORDER_BY_USER   = PREFIX;
+            String GET_ORDER_STATUS = PREFIX + "/{orderId}";
+            String MOVE_TO_NEXT_STATUS = PREFIX + "/{orderId}/status";
+            String MOVE_TO_PREVIOUS_STATUS = PREFIX + "/{orderId}/status/prev";
         }
 
         public interface Payment {

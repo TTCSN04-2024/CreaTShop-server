@@ -20,6 +20,7 @@ public interface CategoryMapper {
     @Mapping(target = "type", ignore = true)
     Category toCategory(CategoryRequest request);
 
+    @Mapping(target = "products", ignore = true)
     CategoryResponse toCategoryResponse(Category category);
 
     @Mapping(target = "type", ignore = true)

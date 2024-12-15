@@ -7,6 +7,8 @@ package com.example.creatshop.domain.entity;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import com.example.creatshop.constant.OrderStatus;
+import com.example.creatshop.job.state.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -44,11 +46,37 @@ public class OrderDetail {
 
     Double total;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    OrderStatus status;
+
+    @Transient
+    OrderContext orderContext;
+
     @CreationTimestamp
     Timestamp createdAt;
 
     @UpdateTimestamp
     Timestamp updatedAt;
+
+    @PostLoad
+    public void initStatusContext() {
+        if (status == null) {
+            status = OrderStatus.Processing; // Nếu không có trạng thái, gán giá trị mặc định
+        }
+        orderContext = new OrderContext();
+        orderContext.setState(OrderState.from(status));  // Khởi tạo trạng thái từ OrderStatus
+    }
+
+    public void moveToNextStatus() {
+        orderContext.next();
+        this.status = orderContext.getState().getStatus();
+    }
+
+    public void moveToPreviousStatus() {
+        orderContext.prev();
+        this.status = orderContext.getState().getStatus();
+    }
 
     public void addItem(OrderItem orderItem) {
         if (Objects.isNull(items)) {

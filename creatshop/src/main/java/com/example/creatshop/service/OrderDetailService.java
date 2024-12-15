@@ -21,4 +21,10 @@ public interface OrderDetailService {
     GlobalResponse<Meta, PaymentResponse> cancelOrder(String username, Integer id);
 
     GlobalResponse<Meta, List<OrderDetailResponse>> getOrders(String username);
+
+    GlobalResponse<Meta, OrderDetailResponse> getOrder(Integer id);
+
+    GlobalResponse<Meta, OrderDetailResponse> moveToNextStatus(Integer id);
+
+    GlobalResponse<Meta, OrderDetailResponse> moveToPreviousStatus(Integer id);
 }

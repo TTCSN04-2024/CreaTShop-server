@@ -28,5 +28,6 @@ public class OrderDetailResponse {
     Double                  total;
     Timestamp               createdAt;
     Timestamp               updatedAt;
+    String                  status;
     List<OrderItemResponse> orderItems;
 }
