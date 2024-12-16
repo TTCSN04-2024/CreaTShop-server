@@ -2,7 +2,9 @@ CREATE DATABASE IF NOT EXISTS creatshopdb
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
-use creatshopdb;
+USE creatshopdb;
+
+SET character_set_client = 'utf8mb4';
 
 create table carts
 (
