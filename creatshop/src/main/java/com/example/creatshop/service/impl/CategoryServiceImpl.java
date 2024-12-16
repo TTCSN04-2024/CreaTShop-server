@@ -21,7 +21,9 @@ import com.example.creatshop.exception.AlreadyExistsException;
 import com.example.creatshop.exception.NotFoundException;
 import com.example.creatshop.exception.SQLUniqueException;
 import com.example.creatshop.repository.CategoryRepository;
+import com.example.creatshop.repository.OrderItemRepository;
 import com.example.creatshop.repository.ProductRepository;
+import com.example.creatshop.repository.ProductVariantRepository;
 import com.example.creatshop.service.CategoryService;
 import com.example.creatshop.util.EnumUtils;
 import jakarta.transaction.Transactional;
@@ -45,6 +47,8 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
     ProductRepository  productRepository;
+    ProductVariantRepository variantRepository;
+    OrderItemRepository orderItemRepository;
     CategoryMapper     categoryMapper;
     EnumUtils          enumUtils;
 
@@ -116,6 +120,13 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(cateId)
                                               .orElseThrow(() -> new NotFoundException(ErrorMessage.Category.NOT_FOUND_BY_ID));
 
+        for (var product : category.getProducts()) {
+            for (var variant : product.getProductVariants()) {
+                orderItemRepository.deleteAllByVariant(variant);
+            }
+            // Xóa tất cả các product_info liên quan đến product
+            variantRepository.deleteAllByProduct(product);
+        }
         productRepository.deleteAllByCategory(category);
         categoryRepository.delete(category);
 

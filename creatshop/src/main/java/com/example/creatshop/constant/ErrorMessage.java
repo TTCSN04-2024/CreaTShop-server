@@ -72,6 +72,7 @@ public interface ErrorMessage {
         String ERR_VARIANT_COLOR_MAX = "exception.validate.color.size";
         String ERR_VARIANT_SIZE_NOT_BLANK = "exception.validate.size.not-blank";
         String ERR_VARIANT_SIZE_SIZE = "exception.validate.size.size";
+        String ERR_PROVIDER_NOT_BLANK = "exception.validate.provider.not-blank";
     }
 
     public interface Role {
