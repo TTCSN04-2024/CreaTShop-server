@@ -24,6 +24,7 @@ import com.example.creatshop.repository.CategoryRepository;
 import com.example.creatshop.repository.ProductRepository;
 import com.example.creatshop.service.CategoryService;
 import com.example.creatshop.util.EnumUtils;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -109,6 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
                              .build();
     }
 
+    @Transactional
     @Override
     public GlobalResponse<Meta, String> deleteCategory(Integer cateId) {
         Category category = categoryRepository.findById(cateId)
