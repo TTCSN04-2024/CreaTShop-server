@@ -97,6 +97,21 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(UploadFileException.class)
+    public ResponseEntity<GlobalResponse<Meta, BlankData>> handlerUploadFileException(UploadFileException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(GlobalResponse
+                        .<Meta, BlankData>builder()
+                        .meta(Meta.builder()
+                                .status(Status.ERROR)
+                                .message(messageSourceUtils.getLocalizedMessage(ex.getMessage()))
+                                .build()
+                        )
+                        .build()
+                );
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GlobalResponse<Meta, Map<String, String>>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         Map<String, String> validationErrors = new HashMap<>();
