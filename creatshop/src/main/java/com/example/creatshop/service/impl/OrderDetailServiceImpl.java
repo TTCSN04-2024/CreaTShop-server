@@ -75,7 +75,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                                                       .orElseThrow(() -> new NotFoundException(ErrorMessage.ProductVariant.NOT_FOUND_BY_ID));
 
             if (variant.getQuantity() < item.getQuantity()) {
-                throw new IllegalArgumentException("Quantity requested exceeds available stock.");
+                throw new IllegalArgumentException(ErrorMessage.OrderDetail.ERR_QUANTITY_CANNOT_BIGGER_STOCK);
             }
 
             OrderItem orderItem = OrderItem.builder()
@@ -135,7 +135,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Payment.ERR_NOT_FOUND_BY_ID));
 
         if (!paymentDetail.getStatus().equals(PaymentStatus.PENDING)) {
-            throw new IllegalArgumentException("Only pending payments can be canceled.");
+            throw new IllegalArgumentException(ErrorMessage.Payment.ERR_ONLY_PENDING_CAN_CANCEL);
         }
 
         List<OrderItem> orderItems = paymentDetail.getOrderDetail().getItems();
