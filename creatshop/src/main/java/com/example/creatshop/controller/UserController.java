@@ -106,9 +106,17 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(Endpoint.V1.User.BANNED_ACCOUNT)
-    public ResponseEntity<GlobalResponse<Meta, UserResponse>> bannedAccount(@PathVariable(name = "userId") String userId) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.bannedAccount(userId));
+    public ResponseEntity<GlobalResponse<Meta, UserResponse>> bannedAccount(@PathVariable(name = "userId") String userId,
+                                                                            @RequestParam Boolean isLocked) {
+        if (isLocked) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(userService.bannedAccount(userId));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(userService.unBannedAccount(userId));
+        }
+
     }
 }

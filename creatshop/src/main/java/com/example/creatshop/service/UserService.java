@@ -25,4 +25,6 @@ public interface UserService {
     GlobalResponse<Meta, List<UserResponse>> getUsers();
 
     GlobalResponse<Meta, UserResponse> bannedAccount(String userId);
+
+    GlobalResponse<Meta, UserResponse> unBannedAccount(String userId);
 }

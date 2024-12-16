@@ -171,6 +171,23 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public GlobalResponse<Meta, UserResponse> unBannedAccount(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+
+        user.setStatus(AccountStatus.ACTIVE);
+
+        user = userRepository.save(user);
+
+        UserResponse response = userMapper.toUserResponse(user);
+
+        return GlobalResponse.<Meta, UserResponse>builder()
+                .meta(Meta.builder().status(Status.SUCCESS).build())
+                .data(response)
+                .build();
+    }
+
     private List<AddressResponse> getAddress(User user) {
         List<AddressResponse> responses = new ArrayList<>();
         for(var item : user.getAddresses()) {
