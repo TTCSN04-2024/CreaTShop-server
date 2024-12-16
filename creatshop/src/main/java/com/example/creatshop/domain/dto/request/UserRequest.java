@@ -37,6 +37,7 @@ public class UserRequest {
     @Pattern(regexp = Validate.Auth.PASSWORD_PATTERN, message = ErrorMessage.Validate.ERR_PASSWORD_FORMAT)
     String password;
 
+    @NotBlank(message = ErrorMessage.Validate.ERR_EMAIL_NOT_BLANK)
     @Email(message = ErrorMessage.Validate.ERR_EMAIL_FORMAT)
     String email;
 
