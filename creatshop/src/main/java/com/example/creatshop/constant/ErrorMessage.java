@@ -34,6 +34,8 @@ public interface ErrorMessage {
         String ERR_PHONE_FORMAT            = "exception.validate.phoneNumber.format";
         String ERR_CATEGORY_NAME_NOT_EMPTY = "exception.validate.category.name-not-empty";
         String ERR_CATEGORY_TYPE_NOT_EMPTY = "exception.validate.category.type-not-empty";
+        String ERR_EMAIL_NOT_BLANK         = "exception.validate.email.not-blank";
+        String ERR_PHONE_NUMBER_NOT_BLANK  = "exception.validate.phoneNumber.not-blank";
     }
 
     public interface Role {

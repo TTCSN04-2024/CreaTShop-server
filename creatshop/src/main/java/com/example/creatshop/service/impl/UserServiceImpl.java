@@ -14,6 +14,7 @@ import com.example.creatshop.constant.Status;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.UserRequest;
+import com.example.creatshop.domain.dto.request.UserUpdateRequest;
 import com.example.creatshop.domain.dto.response.AddressResponse;
 import com.example.creatshop.domain.dto.response.UserResponse;
 import com.example.creatshop.domain.entity.Cart;
@@ -103,13 +104,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GlobalResponse<Meta, UserResponse> updateUser(UserRequest request, String username) {
+    public GlobalResponse<Meta, UserResponse> updateUser(UserUpdateRequest request, String username) {
         User user = userRepository.findByUsername(username)
                                   .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
-
-        if (StringUtils.hasText(request.getUsername())) {
-            throw new BadRequestException(ErrorMessage.User.ERR_CAN_NOT_UPDATE_USERNAME);
-        }
 
         userMapper.updateUser(request, user);
 

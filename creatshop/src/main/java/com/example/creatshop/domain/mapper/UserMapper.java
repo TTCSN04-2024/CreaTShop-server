@@ -8,6 +8,7 @@ package com.example.creatshop.domain.mapper;
  */
 
 import com.example.creatshop.domain.dto.request.UserRequest;
+import com.example.creatshop.domain.dto.request.UserUpdateRequest;
 import com.example.creatshop.domain.dto.response.UserResponse;
 import com.example.creatshop.domain.entity.User;
 import org.mapstruct.*;
@@ -21,5 +22,5 @@ public interface UserMapper {
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "username", ignore = true)
-    void updateUser(UserRequest request, @MappingTarget User user);
+    void updateUser(UserUpdateRequest request, @MappingTarget User user);
 }

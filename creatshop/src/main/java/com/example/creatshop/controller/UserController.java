@@ -11,6 +11,7 @@ import com.example.creatshop.constant.Endpoint;
 import com.example.creatshop.domain.dto.global.GlobalResponse;
 import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.UserRequest;
+import com.example.creatshop.domain.dto.request.UserUpdateRequest;
 import com.example.creatshop.domain.dto.response.UserResponse;
 import com.example.creatshop.service.UserService;
 import jakarta.validation.Valid;
@@ -65,7 +66,7 @@ public class UserController {
                          content = @Content(mediaType = "application/json"))
     })
     @PutMapping(Endpoint.V1.User.UPDATE_USER)
-    public ResponseEntity<GlobalResponse<Meta, UserResponse>> updateUser(@RequestBody UserRequest request,
+    public ResponseEntity<GlobalResponse<Meta, UserResponse>> updateUser(@RequestBody UserUpdateRequest request,
                                                                          @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity
                 .status(HttpStatus.OK)

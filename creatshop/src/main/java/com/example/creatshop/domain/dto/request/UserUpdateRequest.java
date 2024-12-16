@@ -1,11 +1,4 @@
 package com.example.creatshop.domain.dto.request;
-/*
- * @author HongAnh
- * @created 22 / 09 / 2024 - 7:30 PM
- * @project CreaTShop-server
- * @social Github: https://github.com/lehonganh0201
- * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
- */
 
 import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.Validate;
@@ -17,30 +10,36 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
 
+/**
+ * ----------------------------------------------------------------------------
+ * Author:        Hong Anh
+ * Created on:    16/12/2024 at 2:06 PM
+ * Project:       CreaTShop-server
+ * Contact:       https://github.com/lehonganh0201
+ * ----------------------------------------------------------------------------
+ */
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRequest {
+public class UserUpdateRequest {
     @NotBlank(message = ErrorMessage.Validate.ERR_FIRSTNAME_NOT_BLANK)
     String firstName;
 
     @NotBlank(message = ErrorMessage.Validate.ERR_LASTNAME_NOT_BLANK)
     String lastName;
 
-    @NotBlank(message = ErrorMessage.Validate.ERR_USERNAME_NOT_BLANK)
-    String username;
-
     @NotBlank(message = ErrorMessage.Validate.ERR_PASSWORD_NOT_BLANK)
     @Pattern(regexp = Validate.Auth.PASSWORD_PATTERN, message = ErrorMessage.Validate.ERR_PASSWORD_FORMAT)
     String password;
 
+    @NotBlank(message = ErrorMessage.Validate.ERR_EMAIL_NOT_BLANK)
     @Email(message = ErrorMessage.Validate.ERR_EMAIL_FORMAT)
     String email;
 
-    @NotBlank(message = ErrorMessage.Validate.ERR_PHONE_NUMBER_NOT_BLANK)
     @Pattern(regexp =  Validate.Auth.PHONE_NUMBER_PATTERN,message = ErrorMessage.Validate.ERR_PHONE_FORMAT)
     String phoneNumber;
 
