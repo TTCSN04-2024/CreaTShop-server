@@ -14,6 +14,7 @@ import com.example.creatshop.domain.dto.request.OrderRequest;
 import com.example.creatshop.domain.dto.response.OrderDetailResponse;
 import com.example.creatshop.domain.dto.response.PaymentResponse;
 import com.example.creatshop.service.OrderDetailService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -51,7 +52,7 @@ public class OrderDetailController {
     })
     @PostMapping(Endpoint.V1.Order.CREATE_ORDER_DETAIL)
     public ResponseEntity<GlobalResponse<Meta, OrderDetailResponse>> createOrderDetail(@AuthenticationPrincipal UserDetails userDetails,
-                                                                                       @RequestBody OrderRequest request) {
+                                                                                       @RequestBody @Valid OrderRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(orderService.createOrder(userDetails.getUsername(), request));

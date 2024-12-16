@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -48,7 +49,7 @@ public class VariantController {
     @PostMapping(value = Endpoint.V1.Variant.CREATE_VARIANT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> createVariant(
             @PathVariable(name = "productId") Integer id,
-            @ModelAttribute ProductVariantRequest request) {
+            @ModelAttribute @Valid ProductVariantRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -106,7 +107,7 @@ public class VariantController {
     @PutMapping(value = Endpoint.V1.Variant.UPDATE_VARIANT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> updateProductVariant(
             @PathVariable(name = "variantId") Integer id,
-            @ModelAttribute ProductVariantRequest request) {
+            @ModelAttribute @Valid ProductVariantRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -15,6 +15,7 @@ import com.example.creatshop.domain.dto.response.AddressResponse;
 import com.example.creatshop.service.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,7 +37,7 @@ public class AddressController {
     @Operation(summary = "Thêm địa chỉ mới", description = "Thêm địa chỉ mới cho người dùng hiện tại")
     @PostMapping(Endpoint.V1.Address.ADD_ADDRESS)
     public ResponseEntity<GlobalResponse<Meta, AddressResponse>> addAddress(@AuthenticationPrincipal UserDetails userDetails,
-                                                                            @RequestBody AddressRequest request) {
+                                                                            @RequestBody @Valid AddressRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(addressService.createAddress(userDetails.getUsername(), request));
@@ -72,7 +73,7 @@ public class AddressController {
     @PutMapping(Endpoint.V1.Address.UPDATE_ADDRESS)
     public ResponseEntity<GlobalResponse<Meta, AddressResponse>> updateAddress(@AuthenticationPrincipal UserDetails userDetails,
                                                                                @PathVariable(name = "addressId") Integer id,
-                                                                               @RequestBody AddressRequest request) {
+                                                                               @RequestBody @Valid AddressRequest request) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(addressService.updateAddress(userDetails.getUsername(), id, request));

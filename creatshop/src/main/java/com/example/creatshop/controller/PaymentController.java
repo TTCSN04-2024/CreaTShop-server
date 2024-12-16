@@ -13,6 +13,7 @@ import com.example.creatshop.domain.dto.global.Meta;
 import com.example.creatshop.domain.dto.request.PaymentRequest;
 import com.example.creatshop.domain.dto.response.PaymentResponse;
 import com.example.creatshop.service.PaymentService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -46,7 +47,7 @@ public class PaymentController {
                          content = @Content(mediaType = "application/json"))
     })
     @PostMapping(Endpoint.V1.Payment.CREATE_PAYMENT_METHOD)
-    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> createPayment(@RequestBody PaymentRequest request) {
+    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> createPayment(@RequestBody @Valid PaymentRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(paymentService.createPayment(request));
@@ -61,7 +62,7 @@ public class PaymentController {
                          content = @Content(mediaType = "application/json"))
     })
     @PutMapping(Endpoint.V1.Payment.UPDATE_PAYMENT_STATUS)
-    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> updatePayment(@RequestBody PaymentRequest request,
+    public ResponseEntity<GlobalResponse<Meta, PaymentResponse>> updatePayment(@RequestBody @Valid PaymentRequest request,
                                                                                @PathVariable(name = "paymentId") Integer id) {
         return ResponseEntity
                 .status(HttpStatus.OK)

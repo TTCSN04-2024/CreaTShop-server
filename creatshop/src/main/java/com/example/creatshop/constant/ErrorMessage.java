@@ -36,6 +36,42 @@ public interface ErrorMessage {
         String ERR_CATEGORY_TYPE_NOT_EMPTY = "exception.validate.category.type-not-empty";
         String ERR_EMAIL_NOT_BLANK         = "exception.validate.email.not-blank";
         String ERR_PHONE_NUMBER_NOT_BLANK  = "exception.validate.phoneNumber.not-blank";
+        String ERR_FIRSTNAME_SIZE          = "exception.validate.firstName.size";
+        String ERR_LASTNAME_SIZE           = "exception.validate.lastName.size";
+        String ERR_COUNTRY_NOT_BLANK       = "exception.validate.country.not-blank";
+        String ERR_CITY_NOT_BLANK          = "exception.validate.city.not-blank";
+        String ERR_DISTRICT_NOT_BLANK      = "exception.validate.district.not-blank";
+        String ERR_COMMUNE_NOT_BLANK       = "exception.validate.commune.not-blank";
+        String ERR_ADDRESS_DETAIL_NOT_BLANK= "exception.validate.addressDetail.not-blank";
+        String ERR_ADDRESS_DETAIL_SIZE     = "exception.validate.addressDetail.size";
+        String ERR_DESCRIPTION_SIZE        = "exception.validate.description.size";
+        String ERR_PRODUCT_ID_NOT_NULL     =  "exception.validate.productId.not-null";
+        String ERR_PRODUCT_ID_MIN          = "exception.validate.productId.min";
+        String ERR_VARIANT_ID_NOT_NULL = "exception.validate.variantId.not-null";
+        String ERR_VARIANT_ID_MIN = "exception.validate.variantId.min";
+        String ERR_QUANTITY_NOT_NULL = "exception.validate.quantity.not-null";
+        String ERR_QUANTITY_MIN = "exception.validate.quantity.min";
+        String ERR_PAYMENT_ID_NOT_NULL = "exception.validate.paymentId.not-null";
+        String ERR_PAYMENT_ID_MIN = "exception.validate.paymentId.min";
+        String ERR_ORDER_ITEMS_NOT_NULL = "exception.validate.orderItems.not-null";
+        String ERR_ORDER_ITEM_NOT_NULL = "exception.validate.orderItem.not-null";
+        String ERR_AMOUNT_NOT_NULL = "exception.validate.amount.not-null";
+        String ERR_AMOUNT_POSITIVE = "exception.validate.amount.positive";
+        String ERR_PROVIDER_NOT_NULL = "exception.validate.provider.not-null";
+        String ERR_STATUS_NOT_NULL = "exception.validate.status.not-null";
+        String ERR_STATUS_INVALID = "exception.validate.status.invalid";
+        String ERR_PRODUCT_NAME_NOT_NULL = "exception.validate.name.not-blank";
+        String ERR_PRODUCT_NAME_LENGTH = "exception.validate.name.size";
+        String ERR_PRODUCT_PRICE_NOT_NULL = "exception.validate.price.not-blank";
+        String ERR_PRODUCT_PRICE_MIN = "exception.validate.price.min";
+        String ERR_PRODUCT_IMAGE_NOT_BLANK = "exception.validate.staticImg.not-blank";
+        String ERR_PRODUCT_DIMAGE_NOT_BLANK = "exception.validate.dynamicImg.not-blank";
+        String ERR_CATEGORY_ID_NOT_BLANK = "exception.validate.categoryId.not-blank";
+        String ERR_CATEGORY_ID_MIN = "exception.validate.categoryId.min";
+        String ERR_VARIANT_COLOR_NOT_BLANK = "exception.validate.color.not-blank";
+        String ERR_VARIANT_COLOR_MAX = "exception.validate.color.size";
+        String ERR_VARIANT_SIZE_NOT_BLANK = "exception.validate.size.not-blank";
+        String ERR_VARIANT_SIZE_SIZE = "exception.validate.size.size";
     }
 
     public interface Role {

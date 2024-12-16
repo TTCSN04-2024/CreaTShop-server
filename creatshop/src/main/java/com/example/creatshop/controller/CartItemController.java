@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -48,7 +49,8 @@ public class CartItemController {
                          content = @Content(mediaType = "application/json"))
     })
     @PostMapping(Endpoint.V1.Cart.ADD_CART_ITEM)
-    public ResponseEntity<GlobalResponse<Meta, CartItemResponse>> addCartItem(@AuthenticationPrincipal UserDetails userDetails, @RequestBody CartItemRequest request) {
+    public ResponseEntity<GlobalResponse<Meta, CartItemResponse>> addCartItem(@AuthenticationPrincipal UserDetails userDetails,
+                                                                              @RequestBody @Valid CartItemRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(cartService.addCartItem(userDetails.getUsername(), request));
@@ -91,7 +93,9 @@ public class CartItemController {
                          content = @Content(mediaType = "application/json"))
     })
     @PutMapping(Endpoint.V1.Cart.UPDATE_CART_ITEM)
-    public ResponseEntity<GlobalResponse<Meta, CartItemResponse>> updateCartItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable(name = "cartItemId") Integer id, @RequestBody CartItemRequest request) {
+    public ResponseEntity<GlobalResponse<Meta, CartItemResponse>> updateCartItem(@AuthenticationPrincipal UserDetails userDetails,
+                                                                                 @PathVariable(name = "cartItemId") Integer id,
+                                                                                 @RequestBody @Valid CartItemRequest request) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.updateCartItem(userDetails.getUsername(), id, request));

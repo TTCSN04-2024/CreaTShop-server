@@ -85,8 +85,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                                            .quantity(item.getQuantity())
                                            .build();
 
-            Double itemTotal = calculatorTotal(item.getProductId(), item.getQuantity());
-            total += itemTotal;
+            total ++;
 
             variant.setQuantity(variant.getQuantity() - item.getQuantity());
             variantRepository.save(variant);
