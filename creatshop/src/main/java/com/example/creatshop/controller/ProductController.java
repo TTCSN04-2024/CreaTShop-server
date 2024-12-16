@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,16 +38,18 @@ import java.util.List;
 public class ProductController {
     ProductService productService;
 
-    @Operation(summary = "Tạo sản phẩm mới", description = "Tạo một sản phẩm mới với thông tin yêu cầu.")
+    @Operation(summary = "Tạo sản phẩm mới", description = "Tạo một sản phẩm mới với thông tin yêu cầu, bao gồm hình ảnh tĩnh và động.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sản phẩm được tạo thành công",
-                         content = @Content(mediaType = "application/json",
-                                            schema = @Schema(implementation = ProductResponse.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProductResponse.class))),
             @ApiResponse(responseCode = "400", description = "Yêu cầu không hợp lệ",
-                         content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = "application/json"))
     })
-    @PostMapping(Endpoint.V1.Product.CREATE_PRODUCT)
-    public ResponseEntity<GlobalResponse<Meta, ProductResponse>> createProduct(@ModelAttribute ProductRequest request) {
+    @PostMapping(value = Endpoint.V1.Product.CREATE_PRODUCT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GlobalResponse<Meta, ProductResponse>> createProduct(
+            @ModelAttribute ProductRequest request) {
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(productService.createProduct(request));
@@ -83,13 +86,16 @@ public class ProductController {
     @Operation(summary = "Cập nhật sản phẩm", description = "Cập nhật thông tin của một sản phẩm dựa trên ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sản phẩm được cập nhật thành công",
-                         content = @Content(mediaType = "application/json",
-                                            schema = @Schema(implementation = ProductResponse.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProductResponse.class))),
             @ApiResponse(responseCode = "404", description = "Không tìm thấy sản phẩm với ID cung cấp",
-                         content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = "application/json"))
     })
-    @PutMapping(Endpoint.V1.Product.UPDATE_PRODUCT)
-    public ResponseEntity<GlobalResponse<Meta, ProductResponse>> updateProduct(@PathVariable(name = "productId") Integer id, @ModelAttribute ProductRequest request) {
+    @PutMapping(value = Endpoint.V1.Product.UPDATE_PRODUCT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GlobalResponse<Meta, ProductResponse>> updateProduct(
+            @PathVariable(name = "productId") Integer id,
+            @ModelAttribute ProductRequest request) {
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.updateProduct(id, request));

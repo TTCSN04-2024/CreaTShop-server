@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,16 +41,20 @@ public class VariantController {
     @Operation(summary = "Tạo biến thể sản phẩm", description = "Tạo biến thể mới cho sản phẩm theo ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Biến thể sản phẩm đã được tạo thành công",
-                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductVariantResponse.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductVariantResponse.class))),
             @ApiResponse(responseCode = "400", description = "Yêu cầu không hợp lệ",
-                         content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = "application/json"))
     })
-    @PostMapping(Endpoint.V1.Variant.CREATE_VARIANT)
-    public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> createVariant(@PathVariable(name = "productId") Integer id, @ModelAttribute ProductVariantRequest request) {
+    @PostMapping(value = Endpoint.V1.Variant.CREATE_VARIANT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> createVariant(
+            @PathVariable(name = "productId") Integer id,
+            @ModelAttribute ProductVariantRequest request) {
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(variantService.createVariant(id, request));
     }
+
 
     @Operation(summary = "Lấy các biến thể của sản phẩm", description = "Lấy danh sách biến thể của sản phẩm theo ID sản phẩm.")
     @ApiResponses(value = {
@@ -94,12 +99,15 @@ public class VariantController {
     @Operation(summary = "Cập nhật biến thể sản phẩm", description = "Cập nhật biến thể sản phẩm theo ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Biến thể sản phẩm đã được cập nhật thành công",
-                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductVariantResponse.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductVariantResponse.class))),
             @ApiResponse(responseCode = "404", description = "Không tìm thấy biến thể",
-                         content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = "application/json"))
     })
-    @PutMapping(Endpoint.V1.Variant.UPDATE_VARIANT)
-    public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> updateProductVariant(@PathVariable(name = "variantId") Integer id, @ModelAttribute ProductVariantRequest request) {
+    @PutMapping(value = Endpoint.V1.Variant.UPDATE_VARIANT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<GlobalResponse<Meta, ProductVariantResponse>> updateProductVariant(
+            @PathVariable(name = "variantId") Integer id,
+            @ModelAttribute ProductVariantRequest request) {
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(variantService.updateVariant(id, request));

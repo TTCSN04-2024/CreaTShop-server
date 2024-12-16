@@ -7,6 +7,7 @@ package com.example.creatshop.domain.dto.request;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductVariantRequest {
-    String        color;
-    String        size;
-    Integer       quantity;
+    @Schema(description = "Màu sắc của biến thể sản phẩm", example = "Đỏ")
+    String color;
+
+    @Schema(description = "Kích thước của biến thể sản phẩm", example = "L")
+    String size;
+
+    @Schema(description = "Số lượng của biến thể sản phẩm", example = "100")
+    Integer quantity;
+
+    @Schema(description = "Hình ảnh của biến thể sản phẩm", type = "string", format = "binary")
     MultipartFile image;
 }

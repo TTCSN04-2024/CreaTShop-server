@@ -7,6 +7,7 @@ package com.example.creatshop.domain.dto.request;
  * @social Facebook: https://www.facebook.com/profile.php?id=100047152174225
  */
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,9 +21,18 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductRequest {
-    String                      name;
-    Double                      price;
-    MultipartFile               staticImg;
-    MultipartFile               dynamicImg;
-    Integer                     categoryId;
+    @Schema(description = "Tên sản phẩm", example = "Giày thể thao")
+    String name;
+
+    @Schema(description = "Giá sản phẩm", example = "120.5")
+    Double price;
+
+    @Schema(description = "Hình ảnh tĩnh của sản phẩm", type = "string", format = "binary")
+    MultipartFile staticImg;
+
+    @Schema(description = "Hình ảnh động của sản phẩm", type = "string", format = "binary")
+    MultipartFile dynamicImg;
+
+    @Schema(description = "ID danh mục sản phẩm", example = "1")
+    Integer categoryId;
 }

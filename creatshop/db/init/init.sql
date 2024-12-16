@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS creatshopdb;
+CREATE DATABASE IF NOT EXISTS creatshopdb
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
 use creatshopdb;
 
@@ -181,6 +183,10 @@ VALUES
 -- Tạo dữ liệu cho bảng carts
 INSERT INTO carts (id, created_at, updated_at)
 VALUES
+    (1, NOW(), NOW()),
+    (2, NOW(), NOW()),
+    (3, NOW(), NOW()),
+    (4, NOW(), NOW()),
     (5, NOW(), NOW()),
     (6, NOW(), NOW()),
     (7, NOW(), NOW()),
@@ -216,30 +222,35 @@ INSERT INTO users (
     last_name,
     password,
     phone_number,
-    username
+    username,
+    status
 )
 VALUES
-    (5, 2, NOW(), '1990-01-15', NOW(), 'nguyen.van.a1@example.com', 'Nguyễn', UUID(), 'Văn A', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0901234567', 'nguyenvana1'),
-    (6, 2, NOW(), '1992-03-05', NOW(), 'tran.thi.b2@example.com', 'Trần', UUID(), 'Thị B', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0902234567', 'tranthib2'),
-    (7, 2, NOW(), '1995-06-18', NOW(), 'le.van.c3@example.com', 'Lê', UUID(), 'Văn C', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0903234567', 'levanc3'),
-    (8, 2, NOW(), '1988-10-10', NOW(), 'pham.thi.d4@example.com', 'Phạm', UUID(), 'Thị D', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0904234567', 'phamthid4'),
-    (9, 2, NOW(), '1993-11-12', NOW(), 'vo.van.e5@example.com', 'Võ', UUID(), 'Văn E', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0905234567', 'vovane5'),
-    (10, 2, NOW(), '1989-02-14', NOW(), 'hoang.thi.f6@example.com', 'Hoàng', UUID(), 'Thị F', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0906234567', 'hoangthif6'),
-    (11, 2, NOW(), '1991-01-23', NOW(), 'dao.van.g7@example.com', 'Đào', UUID(), 'Văn G', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0907234567', 'daovang7'),
-    (12, 2, NOW(), '1994-05-30', NOW(), 'bui.thi.h8@example.com', 'Bùi', UUID(), 'Thị H', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0908234567', 'buithih8'),
-    (13, 2, NOW(), '1987-09-07', NOW(), 'nguyen.van.i9@example.com', 'Nguyễn', UUID(), 'Văn I', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0909234567', 'nguyenvani9'),
-    (14, 2, NOW(), '1990-04-25', NOW(), 'pham.thi.j10@example.com', 'Phạm', UUID(), 'Thị J', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0910234567', 'phamthij10'),
-    (15, 2, NOW(), '1986-12-03', NOW(), 'vo.van.k11@example.com', 'Võ', UUID(), 'Văn K', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0911234567', 'vovank11'),
-    (16, 2, NOW(), '1992-07-19', NOW(), 'le.thi.l12@example.com', 'Lê', UUID(), 'Thị L', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0912234567', 'lethil12'),
-    (17, 2, NOW(), '1985-11-22', NOW(), 'hoang.van.m13@example.com', 'Hoàng', UUID(), 'Văn M', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0913234567', 'hoangvanm13'),
-    (18, 2, NOW(), '1993-01-09', NOW(), 'dao.thi.n14@example.com', 'Đào', UUID(), 'Thị N', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0914234567', 'daothin14'),
-    (19, 2, NOW(), '1987-06-17', NOW(), 'bui.van.o15@example.com', 'Bùi', UUID(), 'Văn O', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0915234567', 'buivano15'),
-    (20, 2, NOW(), '1995-03-20', NOW(), 'nguyen.thi.p16@example.com', 'Nguyễn', UUID(), 'Thị P', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0916234567', 'nguyenthp16'),
-	(21, 2, NOW(), '1990-01-01', NOW(), 'tran.thi.q17@example.com', 'Trần', UUID(), 'Thị Q', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0917234567', 'tranthiq17'),
-    (22, 2, NOW(), '1985-05-10', NOW(), 'le.van.r18@example.com', 'Lê', UUID(), 'Văn R', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0918234567', 'levanr18'),
-    (23, 2, NOW(), '1993-08-08', NOW(), 'vo.thi.s19@example.com', 'Võ', UUID(), 'Thị S', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0919234567', 'vothis19'),
-    (24, 2, NOW(), '1988-12-12', NOW(), 'pham.van.t20@example.com', 'Phạm', UUID(), 'Văn T', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0920234567', 'phamvant20'),
-    (25, 2, NOW(), '1991-03-03', NOW(), 'nguyen.thi.u21@example.com', 'Nguyễn', UUID(), 'Thị U', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0921234567', 'nguyenthih21');
+    (1, 1, NOW(), '1990-01-15', NOW(), 'le292620@gmail.com', 'Lê', UUID(), 'Hồng Anh', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '039125678', 'lehonganh','ACTIVE'),
+    (2, 1, NOW(), '1990-01-15', NOW(), 'lephuonganhktpm1k17@gmail.com', 'Lê', UUID(), 'Phương Anh', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0901234567', 'lephuonganh','ACTIVE'),
+    (3, 1, NOW(), '1990-01-15', NOW(), 'vthn3003@gmail.com', 'Vu Thi', UUID(), 'Hong Nhung', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0901234567', 'vuthihongnhung','ACTIVE'),
+    (4, 1, NOW(), '1990-01-15', NOW(), 'nguyenthianhphuong2000tp@gmail.com', 'Nguyen Thi', UUID(), 'Anh Phuong', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0901234567', 'nguyenthianhphuong','ACTIVE'),
+    (5, 2, NOW(), '1990-01-15', NOW(), 'nguyen.van.a1@example.com', 'Nguyễn', UUID(), 'Văn A', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0901234567', 'nguyenvana1','ACTIVE'),
+    (6, 2, NOW(), '1992-03-05', NOW(), 'tran.thi.b2@example.com', 'Trần', UUID(), 'Thị B', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0902234567', 'tranthib2','ACTIVE'),
+    (7, 2, NOW(), '1995-06-18', NOW(), 'le.van.c3@example.com', 'Lê', UUID(), 'Văn C', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0903234567', 'levanc3','ACTIVE'),
+    (8, 2, NOW(), '1988-10-10', NOW(), 'pham.thi.d4@example.com', 'Phạm', UUID(), 'Thị D', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0904234567', 'phamthid4','ACTIVE'),
+    (9, 2, NOW(), '1993-11-12', NOW(), 'vo.van.e5@example.com', 'Võ', UUID(), 'Văn E', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0905234567', 'vovane5','ACTIVE'),
+    (10, 2, NOW(), '1989-02-14', NOW(), 'hoang.thi.f6@example.com', 'Hoàng', UUID(), 'Thị F', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0906234567', 'hoangthif6','ACTIVE'),
+    (11, 2, NOW(), '1991-01-23', NOW(), 'dao.van.g7@example.com', 'Đào', UUID(), 'Văn G', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0907234567', 'daovang7','ACTIVE'),
+    (12, 2, NOW(), '1994-05-30', NOW(), 'bui.thi.h8@example.com', 'Bùi', UUID(), 'Thị H', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0908234567', 'buithih8','ACTIVE'),
+    (13, 2, NOW(), '1987-09-07', NOW(), 'nguyen.van.i9@example.com', 'Nguyễn', UUID(), 'Văn I', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0909234567', 'nguyenvani9','ACTIVE'),
+    (14, 2, NOW(), '1990-04-25', NOW(), 'pham.thi.j10@example.com', 'Phạm', UUID(), 'Thị J', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0910234567', 'phamthij10','ACTIVE'),
+    (15, 2, NOW(), '1986-12-03', NOW(), 'vo.van.k11@example.com', 'Võ', UUID(), 'Văn K', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0911234567', 'vovank11','ACTIVE'),
+    (16, 2, NOW(), '1992-07-19', NOW(), 'le.thi.l12@example.com', 'Lê', UUID(), 'Thị L', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0912234567', 'lethil12','ACTIVE'),
+    (17, 2, NOW(), '1985-11-22', NOW(), 'hoang.van.m13@example.com', 'Hoàng', UUID(), 'Văn M', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0913234567', 'hoangvanm13','ACTIVE'),
+    (18, 2, NOW(), '1993-01-09', NOW(), 'dao.thi.n14@example.com', 'Đào', UUID(), 'Thị N', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0914234567', 'daothin14','ACTIVE'),
+    (19, 2, NOW(), '1987-06-17', NOW(), 'bui.van.o15@example.com', 'Bùi', UUID(), 'Văn O', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0915234567', 'buivano15','ACTIVE'),
+    (20, 2, NOW(), '1995-03-20', NOW(), 'nguyen.thi.p16@example.com', 'Nguyễn', UUID(), 'Thị P', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0916234567', 'nguyenthp16','ACTIVE'),
+	(21, 2, NOW(), '1990-01-01', NOW(), 'tran.thi.q17@example.com', 'Trần', UUID(), 'Thị Q', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0917234567', 'tranthiq17','ACTIVE'),
+    (22, 2, NOW(), '1985-05-10', NOW(), 'le.van.r18@example.com', 'Lê', UUID(), 'Văn R', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0918234567', 'levanr18','ACTIVE'),
+    (23, 2, NOW(), '1993-08-08', NOW(), 'vo.thi.s19@example.com', 'Võ', UUID(), 'Thị S', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0919234567', 'vothis19','ACTIVE'),
+    (24, 2, NOW(), '1988-12-12', NOW(), 'pham.van.t20@example.com', 'Phạm', UUID(), 'Văn T', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0920234567', 'phamvant20','ACTIVE'),
+    (25, 2, NOW(), '1991-03-03', NOW(), 'nguyen.thi.u21@example.com', 'Nguyễn', UUID(), 'Thị U', '$2a$12$O3lo5Yc5k/VAODQLFuGKTuPYYyMS/qqxAlHhVZ6n10x8890qXATzK', '0921234567', 'nguyenthih21','ACTIVE');
     
 -- Thêm bản ghi cho các loại categories
 INSERT INTO categories (created_at, updated_at, name, category_type)
