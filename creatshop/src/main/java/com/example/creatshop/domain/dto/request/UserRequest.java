@@ -9,6 +9,7 @@ package com.example.creatshop.domain.dto.request;
 
 import com.example.creatshop.constant.ErrorMessage;
 import com.example.creatshop.constant.Validate;
+import com.example.creatshop.valid.ValidPhoneNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -41,8 +42,7 @@ public class UserRequest {
     @Email(message = ErrorMessage.Validate.ERR_EMAIL_FORMAT)
     String email;
 
-    @NotBlank(message = ErrorMessage.Validate.ERR_PHONE_NUMBER_NOT_BLANK)
-    @Pattern(regexp =  Validate.Auth.PHONE_NUMBER_PATTERN,message = ErrorMessage.Validate.ERR_PHONE_FORMAT)
+    @ValidPhoneNumber
     String phoneNumber;
 
     Date dateOfBirth;
