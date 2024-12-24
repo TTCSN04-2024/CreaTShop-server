@@ -17,6 +17,7 @@ import com.example.creatshop.domain.dto.response.CategoryResponse;
 import com.example.creatshop.domain.dto.response.CategoryTypeResponse;
 import com.example.creatshop.domain.entity.Category;
 import com.example.creatshop.domain.mapper.CategoryMapper;
+import com.example.creatshop.domain.mapper.ProductMapper;
 import com.example.creatshop.exception.AlreadyExistsException;
 import com.example.creatshop.exception.NotFoundException;
 import com.example.creatshop.exception.SQLUniqueException;
@@ -50,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     ProductVariantRepository variantRepository;
     OrderItemRepository orderItemRepository;
     CategoryMapper     categoryMapper;
+    ProductMapper      productMapper;
     EnumUtils          enumUtils;
 
     @Override
@@ -124,7 +126,6 @@ public class CategoryServiceImpl implements CategoryService {
             for (var variant : product.getProductVariants()) {
                 orderItemRepository.deleteAllByVariant(variant);
             }
-            // Xóa tất cả các product_info liên quan đến product
             variantRepository.deleteAllByProduct(product);
         }
         productRepository.deleteAllByCategory(category);
@@ -163,6 +164,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorMessage.Category.NOT_FOUND_BY_ID));
 
         CategoryResponse response = categoryMapper.toCategoryResponse(category);
+        response.setProducts(category.getProducts().stream().map(productMapper::toProductResponse).collect(Collectors.toList()));
 
         return GlobalResponse.<Meta, CategoryResponse>builder()
                              .meta(Meta.builder().status(Status.SUCCESS).build())
